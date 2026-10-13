@@ -13,11 +13,14 @@
 </head>
 <body>
   <header class="topo">
-    <span class="marca">LUMI<span>ELLE</span></span>
-    <span class="titulo-app">Agendamento</span>
+    <nav class="abas" aria-label="Telas">
+      <a href="#agendamento" class="aba" data-tela="agendamento">Agendamento</a>
+      <a href="#checkout" class="aba" data-tela="checkout">Check-out</a>
+      <a href="#galeria" class="aba" data-tela="galeria">Galeria</a>
+    </nav>
   </header>
 
-  <main>
+  <main id="tela-agendamento" class="tela">
     <section class="cartao">
       <h2>Dados da cliente</h2>
       <label for="texto">Nome, CPF, telefone e CEP, em qualquer ordem</label>
@@ -51,8 +54,20 @@
     <p class="rodape" id="rodape"></p>
   </main>
 
+  <main id="tela-checkout" class="tela" hidden>
+    <div id="lista-checkout"></div>
+    <p class="rodape rodape-dados"></p>
+  </main>
+
+  <main id="tela-galeria" class="tela" hidden>
+    <div id="lista-galeria" class="galeria"></div>
+    <p class="rodape rodape-dados"></p>
+  </main>
+
+  <script src="dados.js"></script>
   <script src="cobertura.js"></script>
   <script src="logica.js"></script>
   <script src="app.js"></script>
+  <script src="telas.js"></script>
 </body>
 </html>

@@ -28,13 +28,15 @@ h2 { font-size: 1rem; margin: 0 0 .35rem; }
 
 .topo {
   position: sticky; top: 0; z-index: 1;
-  display: flex; align-items: baseline; gap: .6rem;
   background: var(--marrom); color: var(--creme);
-  padding: calc(.5rem + env(safe-area-inset-top)) 14px .5rem;
+  padding: env(safe-area-inset-top) 6px 0;
 }
-.marca { font-weight: 700; letter-spacing: .04em; font-size: 1rem; }
-.marca span { color: var(--cobre); }
-.titulo-app { font-size: .95rem; opacity: .9; }
+.abas { display: flex; }
+.aba {
+  flex: 1 1 0; text-align: center; color: var(--creme); text-decoration: none; font-size: .95rem; font-weight: 500;
+  padding: .6rem .2rem .5rem; opacity: .75; border-bottom: 3px solid transparent;
+}
+.aba.ativa { opacity: 1; border-bottom-color: var(--cobre); }
 
 main { max-width: 640px; margin: 0 auto; padding: 10px 10px calc(20px + env(safe-area-inset-bottom)); }
 
@@ -81,3 +83,23 @@ dl.ficha dt:last-of-type, dl.ficha dd:last-of-type { border-bottom: 0; }
 ul.pequeno { padding-left: 1.1rem; }
 ul.pequeno:empty, p.pequeno:empty, #obs:empty { display: none; }
 .rodape { text-align: center; font-size: .75rem; color: var(--suave); margin: 0; }
+
+/* Check-out */
+h3.grupo { font-size: .85rem; color: var(--suave); margin: .7rem 0 .2rem; font-weight: 500; }
+h2 + h3.grupo { margin-top: .2rem; }
+.link-oferta { display: flex; align-items: center; gap: .45rem; padding: .4rem 0; border-bottom: 1px solid var(--linha); }
+.link-oferta:last-child { border-bottom: 0; }
+.link-texto { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.link-texto strong { font-weight: 500; font-size: .95rem; }
+.link-texto .pequeno { margin: 0; }
+.link-oferta .botao { flex: 0 0 auto; min-width: 4.6rem; min-height: 34px; padding: .2rem .55rem; font-size: .88rem;
+  text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.vazio { color: var(--suave); font-size: .9rem; }
+
+/* Galeria */
+.galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .6rem; }
+figure.imagem { margin: 0; padding: .5rem; display: flex; flex-direction: column; }
+figure.imagem img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #f4ede3; border-radius: 6px; }
+figure.imagem figcaption { font-size: .88rem; font-weight: 500; margin: .35rem 0 0; flex: 1 1 auto; }
+figure.imagem .acoes { margin-top: .4rem; gap: .35rem; }
+figure.imagem .botao { padding: .2rem .3rem; flex-grow: 1; }
