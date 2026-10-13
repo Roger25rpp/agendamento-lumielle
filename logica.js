@@ -14,7 +14,9 @@
   // "[10:32, 06/10/2026] Rogerio: texto" (copiado do WhatsApp Web) ou "06/10/2026 10:32 - Rogerio: texto" (exportado)
   var PREFIXOS = [
     /^\[(\d{1,2}):(\d{2})(?::\d{2})?,\s*(\d{1,2})\/(\d{1,2})\/(\d{2,4})\]\s*[^:]{1,60}:\s?(.*)$/,
-    /^(\d{1,2})\/(\d{1,2})\/(\d{2,4}),?\s+(\d{1,2}):(\d{2})\s+-\s+[^:]{1,60}:\s?(.*)$/
+    /^(\d{1,2})\/(\d{1,2})\/(\d{2,4}),?\s+(\d{1,2}):(\d{2})\s+-\s+[^:]{1,60}:\s?(.*)$/,
+    // "[12/10, 10:26] Adriana: texto": várias mensagens copiadas no WhatsApp do celular (pedido de 13/10/2026)
+    /^\[(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?,?\s*(\d{1,2}):(\d{2})(?::\d{2})?\]\s*[^:]{1,60}:\s?(.*)$/
   ];
 
   // As mesmas quebras de linha que o Python reconhece (str.splitlines)

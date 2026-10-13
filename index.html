@@ -20,16 +20,15 @@
   <main>
     <section class="cartao">
       <h2>Dados da cliente</h2>
-      <label for="texto">Cole aqui o que a cliente mandou (nome, CPF, telefone e CEP, em qualquer ordem)</label>
-      <textarea id="texto" rows="6" autocomplete="off" autocapitalize="off" spellcheck="false"
+      <label for="texto">Nome, CPF, telefone e CEP, em qualquer ordem</label>
+      <textarea id="texto" rows="4"autocomplete="off" autocapitalize="off" spellcheck="false"
                 placeholder="+55 21 98226-0000&#10;Fulano de Tal&#10;123.456.789-09&#10;20000-000"></textarea>
       <div class="acoes">
         <button type="button" class="botao claro" id="colar">Colar</button>
         <button type="button" class="botao cobre" id="formatar">Formatar</button>
         <button type="button" class="botao claro" id="limpar">Limpar</button>
       </div>
-      <p class="pequeno">Uma cliente de cada vez. Nada sai do celular: o que você colou fica guardado só neste
-         aparelho, até tocar em Limpar.</p>
+      <p class="pequeno nota">Uma cliente por vez. Fica só no celular até Limpar.</p>
     </section>
 
     <section class="cartao" id="resultado" hidden>
@@ -43,10 +42,10 @@
 
     <section class="cartao">
       <h2>Anotações</h2>
-      <label for="anotacoes">Rascunho livre (kit, valor, dia da entrega, o que for)</label>
+      <label for="anotacoes">Kit, valor, dia da entrega, o que for</label>
       <textarea id="anotacoes" rows="5"></textarea>
       <div class="acoes"><button type="button" class="botao claro" id="apagar-anotacoes">Apagar anotações</button></div>
-      <p class="pequeno">Também fica guardado só neste aparelho, até apagar.</p>
+      <p class="pequeno nota">Fica só no celular até apagar.</p>
     </section>
 
     <p class="rodape" id="rodape"></p>
