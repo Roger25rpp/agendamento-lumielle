@@ -22,6 +22,14 @@ com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz e tem um 
    contra o CRM e publica. O celular pega a versão nova na próxima vez que abrir o app com internet. Às vezes ele só
    pega na segunda abertura.
 
+## Quando mudar os links de checkout ou a Galeria no CRM
+No computador, na conversa com o Claude (pasta do CRM), digite sem espaço depois do `!`:
+
+    !.venv/Scripts/python ../Agendamento-Lumielle/ferramentas/exportar_do_crm.py
+
+Ele abre o banco do CRM só para leitura, pega só os links de checkout e as imagens da Galeria (nada de cliente), atualiza
+a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do app (decisão de 13/10/2026: só produto).
+
 ## Regra importante
 A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py` e `crm/cobertura.py`. Se o Agendamento do CRM
 mudar, mude também o `logica.js` e rode `testes/testar.py`.
@@ -32,3 +40,5 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
 - 13/10/2026: "Colar" acrescenta numa linha nova (não apaga o que já está no quadro); entende várias mensagens
   copiadas no WhatsApp do celular ("[12/10, 10:26] Nome: texto"); tela compacta, com os dados e o resultado na mesma
   tela, sem rolar.
+- 13/10/2026: abas Check-out (links da Logzz e da Braip por grupo, com Abrir e Copiar, sem imagens) e Galeria
+  (Enviar pelo compartilhar do celular e Copiar), com os dados do CRM.
