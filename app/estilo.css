@@ -1,0 +1,82 @@
+@font-face { font-family: "Roboto"; font-weight: 400; src: url("fonts/roboto-400.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roboto"; font-weight: 500; src: url("fonts/roboto-500.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roboto"; font-weight: 700; src: url("fonts/roboto-700.woff2") format("woff2"); font-display: swap; }
+
+/* As mesmas cores do CRM */
+:root {
+  --creme: #faf3e9;
+  --marrom: #4d2c12;
+  --cobre: #b27a27;
+  --branco: #fffdf9;
+  --linha: #e8dccb;
+  --suave: #7a6450;
+  --verde: #2f7a4a;
+  --vermelho: #b03a2e;
+  --laranja: #c26a12;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--creme);
+  color: var(--marrom);
+  font: 16px/1.45 "Roboto", "Segoe UI", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+h2 { font-size: 1.1rem; margin: 0 0 .75rem; }
+
+.topo {
+  position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: baseline; gap: .7rem;
+  background: var(--marrom); color: var(--creme);
+  padding: calc(.75rem + env(safe-area-inset-top)) 16px .75rem;
+}
+.marca { font-weight: 700; letter-spacing: .04em; font-size: 1.1rem; }
+.marca span { color: var(--cobre); }
+.titulo-app { font-size: 1.05rem; opacity: .9; }
+
+main { max-width: 640px; margin: 0 auto; padding: 16px 16px calc(24px + env(safe-area-inset-bottom)); }
+
+.cartao { background: var(--branco); border: 1px solid var(--linha); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+.cartao.alerta { border-color: var(--laranja); background: #fff6ea; }
+
+label { display: block; font-size: .85rem; color: var(--suave); margin-bottom: .35rem; }
+textarea {
+  width: 100%; font: inherit; color: var(--marrom); padding: .6rem .7rem; min-height: 8.5rem; resize: vertical;
+  border: 1px solid #d8c8b2; border-radius: 8px; background: #fff;
+}
+textarea:focus { outline: 2px solid var(--cobre); outline-offset: 0; border-color: var(--cobre); }
+
+.botao {
+  font: inherit; font-weight: 500; cursor: pointer; text-align: center; min-height: 44px;
+  padding: .55rem 1rem; border-radius: 8px; border: 1px solid var(--marrom); background: var(--marrom); color: var(--creme);
+}
+.botao.cobre { background: var(--cobre); border-color: var(--cobre); color: #fff; }
+.botao.claro { background: transparent; color: var(--marrom); }
+.botao:active { transform: scale(.97); }
+.acoes { display: flex; gap: .5rem; margin-top: .8rem; }
+.acoes .botao { flex: 1 1 0; }
+.acoes .botao.cobre { flex-grow: 1.4; }
+
+/* Os quatro campos: rótulo em cima, valor grande e o "Copiar" ao alcance do polegar */
+dl.ficha { margin: 0; }
+dl.ficha dt { color: var(--suave); font-size: .85rem; margin-top: .7rem; }
+dl.ficha dt:first-child { margin-top: 0; }
+dl.ficha dd {
+  margin: .2rem 0 0; display: flex; align-items: center; gap: .6rem;
+  padding-bottom: .7rem; border-bottom: 1px solid var(--linha);
+}
+.copiavel { flex: 1 1 auto; min-width: 0; font-size: 1.15rem; font-weight: 500; overflow-wrap: anywhere; user-select: all; }
+.botao-copiar { flex: 0 0 auto; min-width: 6.2rem; }
+.botao-copiar.copiado { background: #e4f2e8; border-color: var(--verde); color: var(--verde); }
+.texto-alerta { color: var(--vermelho); font-weight: 500; }
+
+.cobertura { margin: .9rem 0 .2rem; padding: .6rem .75rem; border-radius: 8px; background: #f4ede3; }
+.cobertura.atende { background: #e4f2e8; color: var(--verde); }
+.cobertura.fora { background: #fbe6e3; color: var(--vermelho); }
+
+.pequeno { font-size: .85rem; color: var(--suave); }
+ul.pequeno { padding-left: 1.2rem; margin: .6rem 0 0; }
+ul.pequeno:empty, p.pequeno:empty { display: none; }
+.rodape { text-align: center; font-size: .78rem; color: var(--suave); margin: 0; }
