@@ -89,7 +89,6 @@
   document.getElementById("formatar").addEventListener("click", function () {
     gravar("agendamento-texto", texto.value);
     formatar();
-    resultado.hidden || resultado.scrollIntoView({ behavior: "smooth", block: "start" });
   });
   document.getElementById("limpar").addEventListener("click", function () {
     texto.value = ""; gravar("agendamento-texto", ""); resultado.hidden = true; texto.focus();
@@ -97,9 +96,13 @@
   document.getElementById("colar").addEventListener("click", function () {
     if (!navigator.clipboard || !navigator.clipboard.readText) { texto.focus(); return; }
     navigator.clipboard.readText().then(function (colado) {
+      colado = (colado || "").trim();
       if (!colado) return;
-      texto.value = colado; gravar("agendamento-texto", colado); formatar();
-      resultado.scrollIntoView({ behavior: "smooth", block: "start" });
+      // acrescenta embaixo do que já está no quadro, numa linha nova (pedido de 13/10/2026)
+      var antes = texto.value.replace(/\s+$/, "");
+      texto.value = (antes ? antes + "\n" : "") + colado + "\n";
+      texto.scrollTop = texto.scrollHeight;
+      gravar("agendamento-texto", texto.value); formatar();
     }, function () { texto.focus(); });  // sem permissão: deixa colar à mão (toque longo no quadro → Colar)
   });
   texto.addEventListener("input", function () { gravar("agendamento-texto", texto.value); });

@@ -29,3 +29,6 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
 ## Histórico
 - 12/10/2026: primeira versão. Mesmas funções do Agendamento do CRM: regra do 9, " ." no nome único, CPF conferido,
   cobertura da Logzz. Tem também o botão "Colar", que pega o que está copiado no celular e já formata.
+- 13/10/2026: "Colar" acrescenta numa linha nova (não apaga o que já está no quadro); entende várias mensagens
+  copiadas no WhatsApp do celular ("[12/10, 10:26] Nome: texto"); tela compacta, com os dados e o resultado na mesma
+  tela, sem rolar.

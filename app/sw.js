@@ -1,6 +1,6 @@
 /* Deixa o aplicativo funcionar sem internet: guarda os arquivos no celular na primeira abertura.
    VERSAO muda sozinha (ferramentas/atualizar.py) quando algum arquivo muda; aí o celular baixa a versão nova. */
-var VERSAO = "0e08d3e5f743";
+var VERSAO = "f80a0780595b";
 var ARQUIVOS = ["./", "index.html", "estilo.css", "logica.js", "app.js", "cobertura.js", "manifest.webmanifest",
                 "icone-192.png", "icone-512.png", "fonts/roboto-400.woff2", "fonts/roboto-500.woff2", "fonts/roboto-700.woff2"];
 
