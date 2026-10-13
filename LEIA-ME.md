@@ -1,5 +1,7 @@
 # Agendamento Lumielle (aplicativo de celular)
 
+Endereço: https://roger25rpp.github.io/agendamento-lumielle/ (abrir no Chrome do celular → "Instalar app").
+
 O mesmo "Agendamento" do CRM (WhatsApp → Agendamento), feito para o celular. Você cola o que a cliente mandou
 (nome, CPF, telefone e CEP, em qualquer ordem), e o app devolve os campos prontos para o formulário da Logzz, cada um
 com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz e tem um quadro de Anotações.
