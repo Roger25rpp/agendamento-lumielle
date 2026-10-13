@@ -16,9 +16,9 @@ com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz e tem um 
 
 ## Quando a lista de CEPs da Logzz mudar
 1. Troque o arquivo no CRM, como já faz (`C:\CRM-Lumielle\cobertura\cobertura_logzz.xlsx`).
-2. Rode: `C:\CRM-Lumielle\.venv\Scripts\python.exe ferramentas\atualizar.py`
-3. Publique: `C:CRM-Lumielle.venvScriptspython.exe ferramentaspublicar.py` (o passo 2 já vem junto). O celular pega a versão nova na próxima vez que abrir o app com internet. Às vezes ele só pega na
-   segunda abertura.
+2. Rode: `C:\CRM-Lumielle\.venv\Scripts\python.exe ferramentas\publicar.py`. Ele atualiza a lista, confere o app
+   contra o CRM e publica. O celular pega a versão nova na próxima vez que abrir o app com internet. Às vezes ele só
+   pega na segunda abertura.
 
 ## Regra importante
 A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py` e `crm/cobertura.py`. Se o Agendamento do CRM
