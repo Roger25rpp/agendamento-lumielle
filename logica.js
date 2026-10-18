@@ -163,6 +163,23 @@
     return { situacao: cidades.length ? "atende" : "fora", cidades: cidades, obs: obs };
   }
 
+  // DDD do telefone e cobertura aproximada da Logzz (cópia de ddd_na_cobertura, crm/regioes.py; 18/10/2026).
+  // ddds: {"21": [uf, estado, cidade de referência, observação, atendidos, municípios, atende a cidade], ...}
+  // (arquivo ddd.js). Atendidos null = a tabela foi gerada sem a lista de cobertura.
+  function dddNaCobertura(ddds, telefone) {
+    var digitos = digitosDe(telefone);
+    if (digitos.length < 10) return null;
+    var ddd = digitos.slice(0, 2), l = ddds && ddds[ddd];
+    if (!l) {
+      return { ddd: ddd, uf: "?", cidade: "", estado: "DDD desconhecido", observacao: "", situacao: "desconhecido",
+               atendidos: null, municipios: null };
+    }
+    var r = { ddd: ddd, uf: l[0], cidade: l[2], estado: l[1], observacao: l[3] };
+    if (l[4] === null) { r.situacao = "sem_lista"; r.atendidos = null; r.municipios = null; return r; }
+    r.situacao = l[6] ? "atende" : "nao_atende"; r.atendidos = l[4]; r.municipios = l[5];
+    return r;
+  }
+
   function mostrarCpf(v) {
     if (!v) return "";
     if (v.length === 11) return v.slice(0, 3) + "." + v.slice(3, 6) + "." + v.slice(6, 9) + "-" + v.slice(9);
@@ -176,7 +193,7 @@
   }
 
   var api = { formatar: formatar, verificar: verificar, cpfValido: cpfValido, arrumarNome: arrumarNome,
-              mostrarCpf: mostrarCpf, mostrarCep: mostrarCep };
+              mostrarCpf: mostrarCpf, mostrarCep: mostrarCep, dddNaCobertura: dddNaCobertura };
   if (typeof module === "object" && module.exports) module.exports = api;
   else raiz.Agendamento = api;
 })(this);
