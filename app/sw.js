@@ -1,8 +1,8 @@
 /* Deixa o aplicativo funcionar sem internet: guarda os arquivos no celular na primeira abertura.
    VERSAO muda sozinha (ferramentas/atualizar.py) quando algum arquivo muda; aí o celular baixa a versão nova.
    As imagens da Galeria ficam numa caixa à parte: numa versão nova, só as imagens novas são baixadas. */
-var VERSAO = "54c9d0aed285";
-var ARQUIVOS = ["./", "index.html", "estilo.css", "logica.js", "app.js", "telas.js", "cobertura.js", "dados.js",
+var VERSAO = "41d6d4666507";
+var ARQUIVOS = ["./", "index.html", "estilo.css", "logica.js", "app.js", "telas.js", "cobertura.js", "ddd.js", "dados.js",
                 "manifest.webmanifest", "icone-192.png", "icone-512.png",
                 "fonts/roboto-400.woff2", "fonts/roboto-500.woff2", "fonts/roboto-700.woff2"];
 var CAIXA = "agendamento-" + VERSAO, CAIXA_GALERIA = "agendamento-galeria";

@@ -11,7 +11,7 @@ import sys
 PASTA = os.path.dirname(os.path.abspath(__file__))
 CRM = os.environ.get("CRM_LUMIELLE", r"C:\CRM-Lumielle")
 sys.path.insert(0, CRM)
-from crm import agendamento, cobertura  # noqa: E402
+from crm import agendamento, cobertura, regioes  # noqa: E402
 
 FIXOS = [
     "+55 21 98226-0000\nFulano de tal\n123.456.789-09\n20000-000",
@@ -27,11 +27,14 @@ FIXOS = [
     "[12/10, 10:26] Adriana Costa: Lidia" + chr(10) + "[12/10, 10:26] Adriana Costa: 83706-340" + chr(10)
     + "[12/10, 10:27] Adriana Costa: 41997089177" + chr(10) + "[12/10, 10:27] Adriana Costa: 52998224725",
     "nome completo: Ç é\n021 98226 0000",
+    # DDD (18/10/2026): o 61 (DF e GO), os que cruzam PR e SC, um que não existe e números de vários estados
+    "Ana\n61 98226-0011", "Ana\n42 98226-0011", "Ana\n47 98226-0011", "Ana\n49 98226-0011", "Ana\n20 98226-0011",
+    "Ana\n92 98226-0011", "Ana\n85 98226-0011", "Ana\n51 98226-0011", "Ana\n71 3222-0011",
 ]
 PEDACOS = ["Ana", "maria DE souza", "Zé", "João da Silva", "+55 21 98226-0000", "21 8226 0000", "(11) 3322-1100",
            "11987654321", "5511987654321", "529.982.247-25", "52998224725", "12345678900", "20000-000", "01310100",
            "69000-001", "40000000", "CPF: 11144477735", "Tel: 41 99999-8888", "CEP: 88000-000", "obs: tanto faz",
-           "*Bia*", "_Lu_", "[12/10, 10:27] Ana Lu: 41997089177", "[3/1/2026, 09:00] Ana: Rita Lee", "123", "R. X, 10", "[09:00, 01/10/2026] Ana: 52998224725", "Nome: ", "Cliente: Rita"]
+           "*Bia*", "_Lu_", "61 98226-0011", "(47) 99123-0011", "20 98226-0011", "85 3222-0011", "[12/10, 10:27] Ana Lu: 41997089177", "[3/1/2026, 09:00] Ana: Rita Lee", "123", "R. X, 10", "[09:00, 01/10/2026] Ana: 52998224725", "Nome: ", "Cliente: Rita"]
 
 
 def casos():
@@ -48,7 +51,8 @@ def esperado(texto):
     fmt_cpf = (lambda v: "" if not v else f"{v[:3]}.{v[3:6]}.{v[6:9]}-{v[9:]}" if len(v) == 11
                else f"{v[:2]}.{v[2:5]}.{v[5:8]}/{v[8:12]}-{v[12:]}" if len(v) == 14 else v)
     fmt_cep = (lambda v: f"{v[:5]}-{v[5:]}" if v and len(v) == 8 else (v or ""))
-    return {**d, "cobertura": cob, "cpf_tela": fmt_cpf(d["cpf"]), "cep_tela": fmt_cep(d["cep"])}
+    ddd = regioes.ddd_na_cobertura(d["telefone"], os.path.join(CRM, "regioes"), os.path.join(CRM, "cobertura"))
+    return {**d, "cobertura": cob, "cpf_tela": fmt_cpf(d["cpf"]), "cep_tela": fmt_cep(d["cep"]), "ddd": ddd}
 
 
 def main():

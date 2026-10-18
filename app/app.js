@@ -49,6 +49,36 @@
     lista.appendChild(dd);
   }
 
+  // Pelo DDD do telefone (18/10/2026), igual ao Agendamento do CRM: é só uma pista; quem decide é o CEP
+  function mostrarDdd(r, temCep) {
+    var caixa = document.getElementById("ddd");
+    caixa.textContent = "";
+    if (!r) return;
+    var onde = "DDD " + r.ddd + (r.cidade ? " · " + r.cidade + "/" + r.uf : "");
+    var p = elemento("p", "cobertura");
+    if (r.situacao === "atende") {
+      p.classList.add("atende");
+      p.appendChild(elemento("strong", null, "✅ " + onde + ": a Logzz atende " + r.cidade));
+      p.appendChild(elemento("span", "pequeno", " · " + r.atendidos + " de " + r.municipios + " municípios do DDD (aproximado)"));
+    } else if (r.situacao === "nao_atende") {
+      if (!r.atendidos) p.classList.add("fora");
+      p.appendChild(elemento("strong", null, (r.atendidos ? "ℹ️ " : "⚠️ ") + onde + ": a Logzz não atende " + r.cidade));
+      p.appendChild(elemento("span", "pequeno", " · " + r.atendidos + " de " + r.municipios +
+                                                " municípios do DDD atendidos (aproximado)"));
+    } else if (r.situacao === "desconhecido") {
+      p.textContent = "DDD " + r.ddd + " não existe na tabela de DDDs: confira o telefone com a cliente.";
+    } else {
+      p.textContent = onde + ". Sem a lista de cobertura da Logzz, não dá para conferir o DDD.";
+    }
+    caixa.appendChild(p);
+    if (r.observacao) {
+      caixa.appendChild(elemento("p", "pequeno", "O DDD " + r.ddd + " " + r.observacao.charAt(0).toLowerCase() +
+                                                 r.observacao.slice(1) + "."));
+    }
+    caixa.appendChild(elemento("p", "pequeno", "Pelo DDD: é onde o número foi registrado, não onde a cliente mora. " +
+                                               "Quem decide é o CEP" + (temCep ? " (acima)." : ".")));
+  }
+
   function formatar() {
     if (!texto.value.trim()) { resultado.hidden = true; return; }
     var d = A.formatar(texto.value);
@@ -77,6 +107,7 @@
     var obs = document.getElementById("obs");
     obs.textContent = "";
     cobertura.obs.forEach(function (o) { obs.appendChild(elemento("p", "pequeno", o)); });
+    mostrarDdd(A.dddNaCobertura(window.DDDS, d.telefone), !!d.cep);
 
     var avisos = document.getElementById("avisos");
     avisos.textContent = "";

@@ -4,16 +4,18 @@ Endereço: https://roger25rpp.github.io/agendamento-lumielle/ (abrir no Chrome d
 
 O mesmo "Agendamento" do CRM (WhatsApp → Agendamento), feito para o celular. Você cola o que a cliente mandou
 (nome, CPF, telefone e CEP, em qualquer ordem), e o app devolve os campos prontos para o formulário da Logzz, cada um
-com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz e tem um quadro de Anotações.
+com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz, mostra se a Logzz atende o DDD do telefone
+(aproximado) e tem um quadro de Anotações.
 
 - **Nada sai do celular.** O app não envia nada para lugar nenhum. O texto colado e as anotações ficam guardados só no
   aparelho, até você tocar em Limpar ou em Apagar anotações.
 - Depois de instalado, funciona **sem internet**.
-- Não tem dado de cliente nesta pasta. A lista de CEPs da Logzz (`app/cobertura.js`) só tem faixas de CEP e cidades.
+- Não tem dado de cliente nesta pasta. A lista de CEPs da Logzz (`app/cobertura.js`) só tem faixas de CEP e cidades, e a
+  tabela de DDDs (`app/ddd.js`) só tem DDD, estado, cidade de referência e contagem de municípios atendidos.
 
 ## Pastas
 - `app/`: o aplicativo (é só isto que vai para a internet).
-- `ferramentas/atualizar.py`: copia a lista de CEPs do CRM para o app e marca a versão nova.
+- `ferramentas/atualizar.py`: copia a lista de CEPs do CRM para o app, gera a tabela de DDDs e marca a versão nova.
 - `testes/testar.py`: confere que o app dá o mesmo resultado do CRM (3.000 textos fictícios).
 
 ## Quando a lista de CEPs da Logzz mudar
@@ -31,7 +33,8 @@ Ele abre o banco do CRM só para leitura, pega só os links de checkout e as ima
 a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do app (decisão de 13/10/2026: só produto).
 
 ## Regra importante
-A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py` e `crm/cobertura.py`. Se o Agendamento do CRM
+A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py`, `crm/cobertura.py` e da função
+`ddd_na_cobertura` de `crm/regioes.py`. Se o Agendamento do CRM
 mudar, mude também o `logica.js` e rode `testes/testar.py`.
 
 ## Histórico
@@ -42,3 +45,6 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
   tela, sem rolar.
 - 13/10/2026: abas Check-out (links da Logzz e da Braip por grupo, com Abrir e Copiar, sem imagens) e Galeria
   (Enviar pelo compartilhar do celular e Copiar), com os dados do CRM.
+- 18/10/2026: ao formatar, mostra também o DDD do telefone (cidade de referência e UF) e se a Logzz atende essa
+  cidade, com "N de M municípios do DDD" (aproximado), igual ao Agendamento do CRM. A tabela vem do CRM
+  (`app/ddd.js`, gerada pelo `atualizar.py`); quem decide continua sendo o CEP.
