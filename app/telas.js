@@ -81,7 +81,7 @@
     });
   }
 
-  // ---------- Galeria: "Enviar" abre o compartilhar do celular (escolha o WhatsApp); "Copiar" copia a imagem ----------
+  // ---------- Galeria: separada como o Check-out (plataforma e grupo; 23/10/2026). "Enviar" abre o compartilhar do celular (escolha o WhatsApp); "Copiar" copia a imagem ----------
   function arquivoDaImagem(img) {
     return fetch(img.arquivo).then(function (r) { return r.blob(); }).then(function (blob) {
       var nome = img.arquivo.split("/").pop();
@@ -102,36 +102,50 @@
     var lista = document.getElementById("lista-galeria");
     var imagens = (DADOS && DADOS.imagens) || [];
     if (!imagens.length) { semDados(lista, "imagens"); return; }
-    imagens.forEach(function (img) {
-      var figura = elemento("figure", "cartao imagem");
-      var foto = elemento("img");
-      foto.src = img.arquivo; foto.alt = img.titulo; foto.loading = "lazy";
-      figura.appendChild(foto);
-      figura.appendChild(elemento("figcaption", null, img.titulo));
-      var acoes = elemento("div", "acoes");
-      var enviar = botao("Enviar", "cobre");
-      enviar.addEventListener("click", function () {
-        arquivoDaImagem(img).then(function (arquivo) {
-          if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-            return navigator.share({ files: [arquivo] });
-          }
-          avisar(enviar, "Use Copiar", "Enviar");
-        }).catch(function (erro) {
-          if (!erro || erro.name !== "AbortError") avisar(enviar, "Não enviou", "Enviar");
-        });
+    [["Logzz", "Logzz"], ["Braip", "Braip"], [null, "Logzz e Braip"]].forEach(function (p) {
+      var daqui = imagens.filter(function (i) { return (i.plataforma || null) === p[0]; });
+      if (!daqui.length) return;
+      lista.appendChild(elemento("h2", "plataforma-galeria", p[1]));
+      GRUPOS.forEach(function (g) {
+        var doGrupo = daqui.filter(function (i) { return (i.grupo || null) === g[0]; });
+        if (!doGrupo.length) return;
+        lista.appendChild(elemento("h3", "grupo", g[0] ? g[1] : "Geral"));
+        var grade = elemento("div", "galeria");
+        doGrupo.forEach(function (img) { grade.appendChild(figuraDaImagem(img)); });
+        lista.appendChild(grade);
       });
-      var copiar = botao("Copiar", "claro");
-      copiar.addEventListener("click", function () {
-        if (!navigator.clipboard || !window.ClipboardItem) { avisar(copiar, "Use Enviar", "Copiar"); return; }
-        navigator.clipboard.write([new ClipboardItem({ "image/png": arquivoDaImagem(img).then(emPng) })])
-          .then(function () { avisar(copiar, "Copiada!", "Copiar", true); },
-                function () { avisar(copiar, "Use Enviar", "Copiar"); });
-      });
-      acoes.appendChild(enviar);
-      acoes.appendChild(copiar);
-      figura.appendChild(acoes);
-      lista.appendChild(figura);
     });
+  }
+
+  function figuraDaImagem(img) {
+    var figura = elemento("figure", "cartao imagem");
+    var foto = elemento("img");
+    foto.src = img.arquivo; foto.alt = img.titulo; foto.loading = "lazy";
+    figura.appendChild(foto);
+    figura.appendChild(elemento("figcaption", null, img.titulo));
+    var acoes = elemento("div", "acoes");
+    var enviar = botao("Enviar", "cobre");
+    enviar.addEventListener("click", function () {
+      arquivoDaImagem(img).then(function (arquivo) {
+        if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+          return navigator.share({ files: [arquivo] });
+        }
+        avisar(enviar, "Use Copiar", "Enviar");
+      }).catch(function (erro) {
+        if (!erro || erro.name !== "AbortError") avisar(enviar, "Não enviou", "Enviar");
+      });
+    });
+    var copiar = botao("Copiar", "claro");
+    copiar.addEventListener("click", function () {
+      if (!navigator.clipboard || !window.ClipboardItem) { avisar(copiar, "Use Enviar", "Copiar"); return; }
+      navigator.clipboard.write([new ClipboardItem({ "image/png": arquivoDaImagem(img).then(emPng) })])
+        .then(function () { avisar(copiar, "Copiada!", "Copiar", true); },
+              function () { avisar(copiar, "Use Enviar", "Copiar"); });
+    });
+    acoes.appendChild(enviar);
+    acoes.appendChild(copiar);
+    figura.appendChild(acoes);
+    return figura;
   }
 
   // ---------- Abas ----------

@@ -2,7 +2,7 @@ r"""Leva os links de checkout e a Galeria do CRM para o aplicativo e publica (pe
 
 Abre o banco do CRM SÓ PARA LEITURA e lê SÓ duas tabelas, sem nenhum dado de cliente:
 - checkout_links: plataforma, grupo, oferta, quantidade, preço e link;
-- imagens: nome e arquivo da Galeria.
+- imagens: nome, arquivo, plataforma e grupo da Galeria.
 Copia as imagens da pasta galeria do CRM para app/galeria, grava app/dados.js e publica (ferramentas/publicar.py).
 Na tela aparecem só as contagens. É o Rogerio quem roda, no computador (uma linha):
     C:\CRM-Lumielle\.venv\Scripts\python.exe C:\Agendamento-Lumielle\ferramentas\exportar_do_crm.py
@@ -28,7 +28,14 @@ def ler_crm(banco):
         links = [dict(r) for r in con.execute(
             "SELECT plataforma, grupo, oferta, qtde, preco, link FROM checkout_links"
             f" ORDER BY plataforma = 'Braip', {ORDEM_GRUPO}, ordem, id")]
-        imagens = [dict(r) for r in con.execute("SELECT titulo, arquivo FROM imagens ORDER BY ordem, id")]
+        colunas = {r["name"] for r in con.execute("PRAGMA table_info(imagens)")}
+        if "grupo" in colunas:  # migração 27 do CRM (23/10/2026): galeria separada como o Checkout
+            imagens = [dict(r) for r in con.execute(
+                "SELECT titulo, arquivo, plataforma, grupo FROM imagens"
+                f" ORDER BY CASE plataforma WHEN 'Logzz' THEN 1 WHEN 'Braip' THEN 2 ELSE 3 END, {ORDEM_GRUPO}, ordem, id")]
+        else:  # o CRM ainda não foi aberto depois da mudança
+            imagens = [dict(r, plataforma=None, grupo=None) for r in con.execute(
+                "SELECT titulo, arquivo FROM imagens ORDER BY ordem, id")]
     finally:
         con.close()
     return links, imagens
@@ -48,7 +55,8 @@ def exportar(banco, galeria_crm):
         alvo = os.path.join(destino, nome)
         if not os.path.isfile(alvo) or os.path.getsize(alvo) != os.path.getsize(origem):
             shutil.copy2(origem, alvo)
-        validas.append({"titulo": i["titulo"], "arquivo": "galeria/" + nome})
+        validas.append({"titulo": i["titulo"], "arquivo": "galeria/" + nome, "plataforma": i["plataforma"],
+                        "grupo": i["grupo"]})
     usados = {os.path.basename(i["arquivo"]) for i in validas}
     for nome in os.listdir(destino):  # imagem que saiu da Galeria do CRM sai do app também
         if nome not in usados:
