@@ -1,6 +1,6 @@
 /* Gerado por ferramentas/exportar_do_crm.py (links de checkout e Galeria do CRM). Não edite à mão. */
 self.DADOS = {
- "exportado_em": "13/10/2026 10:38",
+ "exportado_em": "23/10/2026 10:25",
  "checkout": [
   {
    "plataforma": "Logzz",
@@ -291,6 +291,10 @@ self.DADOS = {
   {
    "titulo": "Tabela RMKT",
    "arquivo": "galeria/img_a468d45517012962.png"
+  },
+  {
+   "titulo": "Kit 3 + 1 (Logzz)",
+   "arquivo": "galeria/img_222ba9220e651d05.jpg"
   }
  ]
 };
