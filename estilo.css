@@ -33,7 +33,7 @@ h2 { font-size: 1rem; margin: 0 0 .35rem; }
 }
 .abas { display: flex; }
 .aba {
-  flex: 1 1 0; text-align: center; color: var(--creme); text-decoration: none; font-size: .95rem; font-weight: 500;
+  flex: 1 1 0; text-align: center; color: var(--creme); text-decoration: none; font-size: .88rem; font-weight: 500;
   padding: .6rem .2rem .5rem; opacity: .75; border-bottom: 3px solid transparent;
 }
 .aba.ativa { opacity: 1; border-bottom-color: var(--cobre); }
@@ -105,3 +105,30 @@ figure.imagem img { width: 100%; aspect-ratio: 1; object-fit: contain; backgroun
 figure.imagem figcaption { font-size: .88rem; font-weight: 500; margin: .35rem 0 0; flex: 1 1 auto; }
 figure.imagem .acoes { margin-top: .4rem; gap: .35rem; }
 figure.imagem .botao { padding: .2rem .3rem; flex-grow: 1; }
+
+/* Mensagens (Respostas e Objeções, com senha; 24/10/2026) */
+.campo { width: 100%; font: inherit; color: var(--marrom); padding: .45rem .6rem; border: 1px solid #d8c8b2;
+  border-radius: 8px; background: #fff; margin-bottom: .45rem; }
+.campo:focus { outline: 2px solid var(--cobre); outline-offset: 0; border-color: var(--cobre); }
+.texto-alerta:empty { display: none; }
+.segmento { display: flex; gap: .4rem; margin-bottom: .5rem; }
+.segmento .botao { flex: 1 1 0; }
+.filtros-mensagens { box-shadow: 0 2px 6px rgba(77, 44, 18, .08); }
+.filtros-mensagens .campo:last-child { margin-bottom: 0; }
+details.grupo-mensagens { padding: 0; }
+details.grupo-mensagens > summary { padding: .65rem .8rem; font-weight: 500; cursor: pointer; }
+details.grupo-mensagens[open] > summary { border-bottom: 1px solid var(--linha); }
+details.grupo-mensagens > .detalhe { padding: .3rem .8rem 0; }
+.objecao { padding: .3rem .8rem .2rem; border-bottom: 2px solid var(--linha); }
+.objecao:last-child { border-bottom: 0; }
+h3.titulo-objecao { font-size: .95rem; margin: .4rem 0 .1rem; color: var(--cobre); }
+.mensagem { padding: .55rem .8rem; border-bottom: 1px solid var(--linha); }
+.objecao .mensagem { padding: .5rem 0; }
+.mensagem:last-child { border-bottom: 0; }
+.mensagem-titulo { display: flex; gap: .4rem; align-items: baseline; flex-wrap: wrap; }
+.mensagem-titulo strong { font-weight: 500; font-size: .92rem; }
+.codigo { font-size: .75rem; color: var(--cobre); font-weight: 700; }
+.detalhe { margin: .15rem 0 0; }
+.texto-mensagem { white-space: pre-wrap; overflow-wrap: anywhere; margin: .35rem 0 0; font-size: .95rem; }
+.mensagem .acoes .botao { min-height: 34px; padding: .2rem .5rem; }
+.pequeno-botao { font-size: .8rem; min-height: 30px; margin-top: .4rem; }
