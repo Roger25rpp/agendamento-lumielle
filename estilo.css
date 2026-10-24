@@ -47,7 +47,6 @@ h2 { font-size: 1rem; margin: 0 0 .35rem; }
 .aba span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .aba.ativa { color: var(--marrom); font-weight: 700; }
 .aba.ativa svg { background: #f1dfc2; color: var(--marrom); }
-body.digitando .abas { display: none; }  /* com o teclado aberto, o menu sai da frente */
 
 main { max-width: 640px; margin: 0 auto; padding: 12px 12px calc(84px + env(safe-area-inset-bottom)); }
 
