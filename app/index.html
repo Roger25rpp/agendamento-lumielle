@@ -13,12 +13,7 @@
 </head>
 <body>
   <header class="topo">
-    <nav class="abas" aria-label="Telas">
-      <a href="#agendamento" class="aba" data-tela="agendamento">Agendamento</a>
-      <a href="#checkout" class="aba" data-tela="checkout">Check-out</a>
-      <a href="#galeria" class="aba" data-tela="galeria">Galeria</a>
-      <a href="#mensagens" class="aba" data-tela="mensagens">Mensagens</a>
-    </nav>
+    <h1><span class="marca">Lumielle</span> <span id="titulo-tela">Agendamento</span></h1>
   </header>
 
   <main id="tela-agendamento" class="tela">
@@ -70,6 +65,14 @@
     <div id="conteudo-mensagens"></div>
     <p class="rodape rodape-dados"></p>
   </main>
+
+  <!-- Menu embaixo, perto do polegar (24/10/2026) -->
+  <nav class="abas" aria-label="Telas">
+    <a href="#agendamento" class="aba" data-tela="agendamento"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M8.5 10h7M8.5 14h7M8.5 18h4"/></svg><span>Agendamento</span></a>
+    <a href="#checkout" class="aba" data-tela="checkout"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.5h10.6L20 7H6.3"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg><span>Check-out</span></a>
+    <a href="#galeria" class="aba" data-tela="galeria"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17"/></svg><span>Galeria</span></a>
+    <a href="#mensagens" class="aba" data-tela="mensagens"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10H10l-4.5 3.5v-3.5H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg><span>Mensagens</span></a>
+  </nav>
 
   <script src="dados.js"></script>
   <script src="cobertura.js"></script>

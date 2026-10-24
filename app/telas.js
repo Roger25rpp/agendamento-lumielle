@@ -1,4 +1,4 @@
-/* Abas do topo (Agendamento · Check-out · Galeria) e as telas de Check-out e Galeria (pedido de 13/10/2026).
+/* Abas (menu de baixo desde 24/10/2026: Agendamento · Check-out · Galeria · Mensagens) e as telas de Check-out e Galeria (pedido de 13/10/2026).
    Os links e as imagens vêm do CRM (dados.js, gerado por ferramentas/exportar_do_crm.py); no app só se usa, não se edita. */
 (function () {
   "use strict";
@@ -170,6 +170,7 @@
     Array.prototype.forEach.call(document.querySelectorAll(".aba"), function (a) {
       a.classList.toggle("ativa", a.dataset.tela === tela);
       if (a.dataset.tela === tela) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      if (a.dataset.tela === tela) document.getElementById("titulo-tela").textContent = a.textContent;
     });
     window.scrollTo(0, 0);
   }
@@ -179,6 +180,14 @@
   Array.prototype.forEach.call(document.querySelectorAll(".rodape-dados"), function (p) {
     p.textContent = DADOS ? "Links e imagens do CRM de " + DADOS.exportado_em + "." : "";
   });
+  // Com o teclado aberto (digitando num campo), o menu de baixo some para não tampar o que se escreve
+  function digitando(e) {
+    var t = e.target;
+    document.body.classList.toggle("digitando", e.type === "focusin" && !!t && (t.tagName === "TEXTAREA" ||
+      (t.tagName === "INPUT" && !/^(button|checkbox|radio)$/i.test(t.type))));
+  }
+  document.addEventListener("focusin", digitando);
+  document.addEventListener("focusout", digitando);
   window.addEventListener("hashchange", mostrar);
   mostrar();
 })();
