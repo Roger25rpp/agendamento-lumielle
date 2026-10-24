@@ -68,6 +68,8 @@ def main():
             if erros <= 5:
                 print("DIFERENTE:", repr(texto), "\n  CRM:", certo, "\n  app:", obtido)
     print(f"{len(textos)} textos conferidos, {erros} diferenças.")
+    import testar_mensagens  # aba Mensagens (24/10/2026)
+    erros += testar_mensagens.main()
     sys.exit(1 if erros else 0)
 
 

@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# Senha das mensagens: fica só no CRM, nunca aqui
+senha*.txt

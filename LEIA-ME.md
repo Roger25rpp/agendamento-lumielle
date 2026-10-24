@@ -14,7 +14,7 @@ com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz, mostra s
   tabela de DDDs (`app/ddd.js`) só tem DDD, estado, cidade de referência e contagem de municípios atendidos.
 
 ## Pastas
-- `app/`: o aplicativo (é só isto que vai para a internet).
+- `app/`: o aplicativo (é só isto que vai para a internet; as Mensagens vão embaralhadas).
 - `ferramentas/atualizar.py`: copia a lista de CEPs do CRM para o app, gera a tabela de DDDs e marca a versão nova.
 - `testes/testar.py`: confere que o app dá o mesmo resultado do CRM (3.000 textos fictícios).
 
@@ -32,6 +32,18 @@ No computador, na conversa com o Claude (pasta do CRM), digite sem espaço depoi
 Ele abre o banco do CRM só para leitura, pega só os links de checkout e as imagens da Galeria (nada de cliente), atualiza
 a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do app (decisão de 13/10/2026: só produto).
 
+## Aba Mensagens (Respostas e Objeções, com senha; 24/10/2026)
+- O mesmo comando leva as Respostas e as Objeções do CRM (sem as mensagens de Recompra). Elas vão **embaralhadas** com a
+  senha do arquivo `C:\CRM-Lumielle\senha_do_app.txt` (primeira linha, uma frase de 4 palavras ou mais). Esse arquivo
+  fica só no computador: não vai para o Git nem para a internet. Sem ele, o comando publica o resto e avisa que as
+  mensagens ficaram de fora.
+- No celular, a aba Mensagens pede a mesma frase **uma vez** (maiúsculas não fazem diferença). Depois abre sozinha. Pede
+  de novo se a senha mudar, se os dados do navegador forem apagados ou num celular novo.
+- Esqueceu a senha? Escreva uma nova no arquivo, rode o comando e digite a nova no celular. Nada se perde.
+- Trava: se algum texto tiver cara de telefone, CPF, e-mail ou CEP, **nada é publicado** e o comando diz qual texto é.
+- `app/cifra.js` e `ferramentas/mensagens.py` fazem o mesmo embaralhamento; `testes/testar_mensagens.py` confere os dois
+  (roda junto com o `testes/testar.py`).
+
 ## Regra importante
 A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py`, `crm/cobertura.py` e da função
 `ddd_na_cobertura` de `crm/regioes.py`. Se o Agendamento do CRM
@@ -48,3 +60,5 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
 - 18/10/2026: ao formatar, mostra também o DDD do telefone (cidade de referência e UF) e se a Logzz atende essa
   cidade, com "N de M municípios do DDD" (aproximado), igual ao Agendamento do CRM. A tabela vem do CRM
   (`app/ddd.js`, gerada pelo `atualizar.py`); quem decide continua sendo o CEP.
+- 24/10/2026: aba Mensagens (Respostas e Objeções do CRM, protegidas por senha), com busca, grupos que abrem e
+  fecham e o campo "Nome da cliente" que troca o {nome}. Galeria separada por plataforma e grupo (23/10/2026).

@@ -2,7 +2,7 @@
    VERSAO muda sozinha (ferramentas/atualizar.py) quando algum arquivo muda; aí o celular baixa a versão nova.
    As imagens da Galeria ficam numa caixa à parte: numa versão nova, só as imagens novas são baixadas. */
 var VERSAO = "6920331e33d8";
-var ARQUIVOS = ["./", "index.html", "estilo.css", "logica.js", "app.js", "telas.js", "cobertura.js", "ddd.js", "dados.js",
+var ARQUIVOS = ["./", "index.html", "estilo.css", "logica.js", "app.js", "telas.js", "cifra.js", "mensagens.js", "cobertura.js", "ddd.js", "dados.js",
                 "manifest.webmanifest", "icone-192.png", "icone-512.png",
                 "fonts/roboto-400.woff2", "fonts/roboto-500.woff2", "fonts/roboto-700.woff2"];
 var CAIXA = "agendamento-" + VERSAO, CAIXA_GALERIA = "agendamento-galeria";
