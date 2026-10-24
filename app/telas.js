@@ -42,6 +42,18 @@
       "Ainda não há " + oque + " no aplicativo. Eles vêm do CRM: peça ao Claude para levar os dados do CRM para o app."));
   }
 
+  // No app instalado do Android, o link abria numa janela por cima do app, e o Rogerio precisava alternar entre ela e o
+  // agendamento para copiar os dados da cliente (pedido de 24/10/2026). O "intent:" manda o link para o Chrome, numa aba
+  // própria; sem o Chrome, abre como antes. Fora do app instalado (ou fora do Android), o link fica como está.
+  function noNavegador(link, agente, instalado) {
+    agente = agente != null ? agente : (navigator.userAgent || "");
+    if (instalado == null) instalado = !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    var partes = /^https:\/\/([^#]+)$/i.exec(link || "");
+    if (!instalado || !/Android/i.test(agente) || !partes) return link;
+    return "intent://" + partes[1] + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" +
+           encodeURIComponent(link) + ";end";
+  }
+
   // ---------- Check-out: Logzz e Braip, separados por grupo; "Abrir" e "Copiar" (sem imagens) ----------
   function montarCheckout() {
     var lista = document.getElementById("lista-checkout");
@@ -66,7 +78,7 @@
           if (detalhe.length) texto.appendChild(elemento("span", "pequeno", detalhe.join(" · ")));
           linha.appendChild(texto);
           var abrir = elemento("a", "botao cobre", "Abrir");
-          abrir.href = l.link; abrir.target = "_blank"; abrir.rel = "noopener noreferrer";
+          abrir.href = noNavegador(l.link); abrir.target = "_blank"; abrir.rel = "noopener noreferrer";
           var copiar = botao("Copiar", "claro botao-copiar");
           copiar.addEventListener("click", function () {
             copiarTexto(l.link).then(function () { avisar(copiar, "Copiado!", "Copiar", true); },
