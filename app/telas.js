@@ -180,14 +180,6 @@
   Array.prototype.forEach.call(document.querySelectorAll(".rodape-dados"), function (p) {
     p.textContent = DADOS ? "Links e imagens do CRM de " + DADOS.exportado_em + "." : "";
   });
-  // Com o teclado aberto (digitando num campo), o menu de baixo some para não tampar o que se escreve
-  function digitando(e) {
-    var t = e.target;
-    document.body.classList.toggle("digitando", e.type === "focusin" && !!t && (t.tagName === "TEXTAREA" ||
-      (t.tagName === "INPUT" && !/^(button|checkbox|radio)$/i.test(t.type))));
-  }
-  document.addEventListener("focusin", digitando);
-  document.addEventListener("focusout", digitando);
   window.addEventListener("hashchange", mostrar);
   mostrar();
 })();
