@@ -115,6 +115,16 @@ figure.imagem img { width: 100%; aspect-ratio: 1; object-fit: contain; backgroun
 figure.imagem figcaption { font-size: .88rem; font-weight: 500; margin: .35rem 0 0; flex: 1 1 auto; }
 figure.imagem .acoes { margin-top: .4rem; gap: .35rem; }
 figure.imagem .botao { padding: .2rem .3rem; flex-grow: 1; }
+/* Várias imagens de uma vez (03/11/2026): a barra fica logo acima do menu de baixo */
+.marcar { display: flex; align-items: center; gap: .4rem; min-height: 36px; font-size: .9rem; margin-top: .2rem; }
+.marcar input { width: 20px; height: 20px; margin: 0; accent-color: var(--cobre); }
+figure.imagem.marcada { outline: 2px solid var(--cobre); outline-offset: -1px; }
+.barra-marcadas { position: fixed; left: 0; right: 0; z-index: 2; display: flex;
+  align-items: center; gap: .45rem; padding: .45rem 14px; background: var(--branco); border-top: 1px solid var(--cobre); }
+.barra-marcadas[hidden] { display: none; }
+.barra-marcadas .botao { padding: .25rem .5rem; }
+.total-marcadas { margin-right: auto; font-weight: 500; font-size: .9rem; white-space: nowrap; }
+#lista-galeria.com-barra { padding-bottom: 60px; }
 
 /* Mensagens (Respostas e Objeções, com senha; 24/10/2026) */
 .campo { width: 100%; font: inherit; color: var(--marrom); padding: .45rem .6rem; border: 1px solid #d8c8b2;

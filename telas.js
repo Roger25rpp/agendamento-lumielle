@@ -110,10 +110,76 @@
     });
   }
 
+  // "Enviar marcadas" (03/11/2026): várias imagens de uma vez pelo compartilhar do celular. O Chrome do Android recusa
+  // mais de 10 arquivos num compartilhamento. Devolve "enviou", "muitas", "sem_suporte", "cancelou" ou "falhou".
+  var LIMITE_ENVIO = 10;
+  function compartilharVarias(arquivos, nav) {
+    if (arquivos.length > LIMITE_ENVIO) return Promise.resolve("muitas");
+    if (!nav.canShare || !nav.canShare({ files: arquivos })) return Promise.resolve("sem_suporte");
+    return nav.share({ files: arquivos }).then(function () { return "enviou"; }, function (erro) {
+      return erro && erro.name === "AbortError" ? "cancelou" : "falhou";
+    });
+  }
+
+  var marcadas = [];  // { img, arquivo (já começa a baixar ao marcar: o Chrome só abre o compartilhar logo após o toque), caixa, figura }
+  var barraMarcadas, totalMarcadas;
+  function atualizarMarcadas() {
+    var n = marcadas.length;
+    barraMarcadas.hidden = !n;
+    barraMarcadas.style.bottom = document.querySelector(".abas").offsetHeight + "px";  // logo acima do menu, qualquer que seja a altura dele
+    totalMarcadas.textContent = n === 1 ? "1 marcada" : n + " marcadas";
+    document.getElementById("lista-galeria").classList.toggle("com-barra", !!n);
+  }
+  function desmarcarTudo() {
+    marcadas.forEach(function (m) { m.caixa.checked = false; m.figura.classList.remove("marcada"); });
+    marcadas = [];
+    atualizarMarcadas();
+  }
+  function montarBarraMarcadas() {
+    barraMarcadas = elemento("div", "barra-marcadas");
+    barraMarcadas.hidden = true;
+    totalMarcadas = elemento("span", "total-marcadas");
+    var enviar = botao("Enviar marcadas", "cobre"), desmarcar = botao("Desmarcar", "claro");
+    desmarcar.addEventListener("click", desmarcarTudo);
+    enviar.addEventListener("click", function () {
+      Promise.all(marcadas.map(function (m) { return m.arquivo; })).then(function (arquivos) {
+        return compartilharVarias(arquivos, navigator);
+      }).catch(function () { return "falhou"; }).then(function (resultado) {
+        if (resultado === "enviou") desmarcarTudo();
+        else if (resultado === "muitas") avisar(enviar, "Até " + LIMITE_ENVIO + " por vez", "Enviar marcadas");
+        else if (resultado !== "cancelou") avisar(enviar, "Não enviou", "Enviar marcadas");
+      });
+    });
+    barraMarcadas.appendChild(totalMarcadas);
+    barraMarcadas.appendChild(enviar);
+    barraMarcadas.appendChild(desmarcar);
+    document.getElementById("tela-galeria").appendChild(barraMarcadas);
+  }
+  function caixaDeMarcar(img, figura) {
+    var rotulo = elemento("label", "marcar");
+    var caixa = elemento("input");
+    caixa.type = "checkbox";
+    caixa.addEventListener("change", function () {
+      figura.classList.toggle("marcada", caixa.checked);
+      if (caixa.checked) {
+        var arquivo = arquivoDaImagem(img);
+        arquivo.catch(function () {});  // se falhar, o aviso aparece ao tocar em "Enviar marcadas"
+        marcadas.push({ img: img, arquivo: arquivo, caixa: caixa, figura: figura });
+      } else {
+        marcadas = marcadas.filter(function (m) { return m.caixa !== caixa; });
+      }
+      atualizarMarcadas();
+    });
+    rotulo.appendChild(caixa);
+    rotulo.appendChild(document.createTextNode(" Marcar"));
+    return rotulo;
+  }
+
   function montarGaleria() {
     var lista = document.getElementById("lista-galeria");
     var imagens = (DADOS && DADOS.imagens) || [];
     if (!imagens.length) { semDados(lista, "imagens"); return; }
+    montarBarraMarcadas();
     [["Logzz", "Logzz"], ["Braip", "Braip"], [null, "Logzz e Braip"]].forEach(function (p) {
       var daqui = imagens.filter(function (i) { return (i.plataforma || null) === p[0]; });
       if (!daqui.length) return;
@@ -135,6 +201,7 @@
     foto.src = img.arquivo; foto.alt = img.titulo; foto.loading = "lazy";
     figura.appendChild(foto);
     figura.appendChild(elemento("figcaption", null, img.titulo));
+    figura.appendChild(caixaDeMarcar(img, figura));
     var acoes = elemento("div", "acoes");
     var enviar = botao("Enviar", "cobre");
     enviar.addEventListener("click", function () {
