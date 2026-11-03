@@ -62,3 +62,5 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
   (`app/ddd.js`, gerada pelo `atualizar.py`); quem decide continua sendo o CEP.
 - 24/10/2026: aba Mensagens (Respostas e Objeções do CRM, protegidas por senha), com busca, grupos que abrem e
   fecham e o campo "Nome da cliente" que troca o {nome}. Galeria separada por plataforma e grupo (23/10/2026).
+- 03/11/2026: Galeria com "Marcar" em cada imagem e "Enviar marcadas": até 10 imagens de uma vez pelo compartilhar do
+  celular (escolha o WhatsApp). "Enviar" e "Copiar" de uma imagem continuam como estavam.

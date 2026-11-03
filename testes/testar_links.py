@@ -26,6 +26,25 @@ process.stdout.write(JSON.stringify(JSON.parse(process.argv[2]).map((c) => noNav
 """
 
 
+# "Enviar marcadas" da Galeria (03/11/2026): todos os arquivos juntos, limite de 10, cancelar não é erro.
+JS_VARIAS = r"""
+const s = require("fs").readFileSync(process.argv[1], "utf8");
+const inicio = s.indexOf("  var LIMITE_ENVIO"), fim = s.indexOf("\n  }", s.indexOf("function compartilharVarias")) + 4;
+const compartilhar = new Function(s.slice(inicio, fim) + "return compartilharVarias;")();
+const enviados = [];
+const nav = (share) => ({ canShare: () => true, share: (d) => { enviados.push(d.files.length); return share(); } });
+const ok = () => Promise.resolve(), cancelou = () => Promise.reject({ name: "AbortError" }), erro = () => Promise.reject({ name: "NotAllowedError" });
+const nomes = (n) => Array(n).fill("a.png");
+Promise.all([
+  compartilhar(nomes(3), nav(ok)), compartilhar(nomes(10), nav(ok)), compartilhar(nomes(11), nav(ok)),
+  compartilhar(nomes(2), nav(cancelou)), compartilhar(nomes(2), nav(erro)),
+  compartilhar(nomes(2), { canShare: () => false }), compartilhar(nomes(2), {}),
+]).then((r) => process.stdout.write(JSON.stringify({ resultados: r, enviados })));
+"""
+VARIAS = {"resultados": ["enviou", "enviou", "muitas", "cancelou", "falhou", "sem_suporte", "sem_suporte"],
+          "enviados": [3, 10, 2, 2]}
+
+
 def main():
     js = subprocess.run(["node", "-e", JS, TELAS, json.dumps([c[:3] for c in CASOS])], capture_output=True, text=True,
                         encoding="utf-8")
@@ -36,6 +55,12 @@ def main():
             print("FALHOU: link do Check-out", caso[:3], "->", obtido)
             erros += 1
     print(f"Links do Check-out: {erros} problema(s).")
+    js = subprocess.run(["node", "-e", JS_VARIAS, TELAS], capture_output=True, text=True, encoding="utf-8")
+    if json.loads(js.stdout or "null") != VARIAS:
+        print("FALHOU: Enviar marcadas ->", js.stdout, js.stderr)
+        erros += 1
+    else:
+        print("Enviar marcadas da Galeria: ok.")
     return erros
 
 
