@@ -7,7 +7,7 @@ process.stdin.on("end", () => {
   process.stdout.write(JSON.stringify({
     enderecos: c.enderecos.map((t) => A.separarEndereco(t)),
     fechamentos: c.fechamentos.map((f) => A.fechamento(f.campos, c.links, f.situacao, c.modelos, f.hoje)),
-    blocos: c.fechamentos.map((f) => A.gerarBloco(f.campos, f.hoje, f.sem_estoque)),
+    blocos: c.fechamentos.map((f) => A.gerarBloco(f.campos, f.hoje, f.sem_estoque, c.links)),
     dias: c.dias.map((d) => A.diaDaEntrega(d[0], d[1], d[2])),
     kits: c.kitsNomes.map((k) => A.nomeDoKit(k[0], k[1])),
     reais: c.reais.map((v) => A.emReais(v)),

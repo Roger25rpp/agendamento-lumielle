@@ -131,7 +131,7 @@ def main():
     for caso, obtido, bloco in zip(lista_fechamentos, app["fechamentos"], app["blocos"]):
         dia = date.fromisoformat(caso["hoje"])
         comparar("fechamento", caso, ag.fechamento(caso["campos"], LINKS, caso["situacao"], MODELOS, dia), obtido)
-        comparar("bloco", caso, ag.gerar_bloco(caso["campos"], dia, caso["sem_estoque"]), bloco)
+        comparar("bloco", caso, ag.gerar_bloco(caso["campos"], dia, caso["sem_estoque"], LINKS), bloco)
         lido = ag.ler_bloco(bloco, dia)  # do app para o CRM, no mesmo dia: a mensagem tem de ser a mesma
         if lido is None:
             comparar("bloco lido", caso, "reconhecido", None)

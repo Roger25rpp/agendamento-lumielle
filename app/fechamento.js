@@ -173,7 +173,7 @@
 
   function blocoSeCompleto(semEstoque) {
     if (!ultimo || ultimo.faltando.length || !A.normalizarTelefone(estado.telefone)) return null;
-    return A.gerarBloco(campos(), hoje(), semEstoque);
+    return A.gerarBloco(campos(), hoje(), semEstoque, LINKS);
   }
 
   function escolherDia(tipo, data) {
