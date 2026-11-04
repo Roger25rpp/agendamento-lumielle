@@ -110,6 +110,8 @@
     });
   }
 
+  window.ImagensApp = { arquivoDaImagem: arquivoDaImagem, emPng: emPng };
+
   // "Enviar marcadas" (03/11/2026): várias imagens de uma vez pelo compartilhar do celular. O Chrome do Android recusa
   // mais de 10 arquivos num compartilhamento. Devolve "enviou", "muitas", "sem_suporte", "cancelou" ou "falhou".
   var LIMITE_ENVIO = 10;

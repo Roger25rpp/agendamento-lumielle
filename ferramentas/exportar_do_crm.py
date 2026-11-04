@@ -1,7 +1,8 @@
 r"""Leva os links de checkout e a Galeria do CRM para o aplicativo e publica (pedido e autorização do Rogerio, 13/10/2026).
 
 Abre o banco do CRM SÓ PARA LEITURA e lê SÓ estas tabelas, sem nenhum dado de cliente:
-- checkout_links: plataforma, grupo, oferta, quantidade, preço e link;
+- checkout_links: id, plataforma, grupo, oferta, quantidade, preço e link;
+- configuracoes: só os textos e a imagem de Configurações → Agendamento (03/11/2026), que vão embaralhados como as mensagens;
 - imagens: nome, arquivo, plataforma e grupo da Galeria;
 - respostas, grupos_resposta, objecoes, objecoes_secoes e objecoes_mensagens (24/10/2026): os textos prontos, sem as
   mensagens RMK. Vão EMBARALHADOS com a senha de C:\CRM-Lumielle\senha_do_app.txt (veja ferramentas/mensagens.py) e
@@ -28,12 +29,23 @@ SENHA = os.path.join(CRM, "senha_do_app.txt")
 ORDEM_GRUPO = "CASE grupo WHEN 'normal' THEN 1 WHEN 'extra' THEN 2 WHEN 'desconto' THEN 3 WHEN 'plus' THEN 4 ELSE 5 END"
 
 
+def textos_do_agendamento(con):
+    """Mensagem de fechamento e Estoque indisponível: os textos de Configurações → Agendamento (os originais, se não mudaram)."""
+    sys.path.insert(0, CRM)
+    from crm import agendamento
+    modelos, estoque = agendamento.modelos(con), agendamento.estoque(con)
+    imagem = con.execute("SELECT arquivo FROM imagens WHERE id = ?", (estoque["imagem_id"],)).fetchone() if estoque["imagem_id"] else None
+    return {"Logzz": modelos["Logzz"], "Braip": modelos["Braip"], "estoque_previsao": estoque["previsao"],
+            "estoque_sem_previsao": estoque["sem_previsao"],
+            "estoque_imagem": "galeria/" + os.path.basename(imagem["arquivo"]) if imagem else None}
+
+
 def ler_crm(banco):
     con = sqlite3.connect(f"file:{banco}?mode=ro", uri=True)  # só leitura
     con.row_factory = sqlite3.Row
     try:
         links = [dict(r) for r in con.execute(
-            "SELECT plataforma, grupo, oferta, qtde, preco, link FROM checkout_links"
+            "SELECT id, plataforma, grupo, oferta, qtde, preco, link FROM checkout_links"
             f" ORDER BY plataforma = 'Braip', {ORDEM_GRUPO}, ordem, id")]
         colunas = {r["name"] for r in con.execute("PRAGMA table_info(imagens)")}
         if "grupo" in colunas:  # migração 27 do CRM (23/10/2026): galeria separada como o Checkout
@@ -44,6 +56,7 @@ def ler_crm(banco):
             imagens = [dict(r, plataforma=None, grupo=None) for r in con.execute(
                 "SELECT titulo, arquivo FROM imagens ORDER BY ordem, id")]
         textos = mensagens.ler(con)
+        textos["agendamento"] = textos_do_agendamento(con)
     finally:
         con.close()
     return links, imagens, textos

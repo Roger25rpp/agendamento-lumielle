@@ -121,5 +121,8 @@ def conferir_dados_pessoais(mensagens):
         for o in s["itens"]:
             olhar(f'Objeção {o["codigo"]}', o["titulo"], o["dor"], o["resultado"], o["nota"],
                   *(m["rotulo"] for m in o["mensagens"]), *(m["texto"] for m in o["mensagens"]))
+    a = mensagens.get("agendamento")
+    if a:
+        olhar("Configurações → Agendamento", a["Logzz"], a["Braip"], a["estoque_previsao"], a["estoque_sem_previsao"])
     if achados:
         raise DadoPessoal(achados)

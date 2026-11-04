@@ -44,8 +44,17 @@ a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do
 - `app/cifra.js` e `ferramentas/mensagens.py` fazem o mesmo embaralhamento; `testes/testar_mensagens.py` confere os dois
   (roda junto com o `testes/testar.py`).
 
+## Mensagem de fechamento e Estoque indisponível (03/11/2026)
+- Na tela Agendamento: endereço separado em campos, kit com preço pelo CEP, dia, turno e a mensagem com Copiar e Enviar.
+- Os textos vêm de Configurações → Agendamento do CRM, no mesmo comando, embaralhados com a mesma senha da aba Mensagens. Sem
+  a senha digitada neste celular, a mensagem não aparece.
+- "Copiar para o CRM" gera um bloco que começa com `#AGENDAMENTO-LUMIELLE`. Mande para você mesmo e, no computador, cole em
+  Dados da cliente, no Agendamento do CRM. Nada sai do celular sozinho.
+- O que está nos campos fica só no celular até tocar em Limpar, em Dados da cliente. Limpe antes de começar outra cliente.
+- `testes/testar_fechamento.py` confere o app contra o CRM (roda junto com o `testes/testar.py`).
+
 ## Regra importante
-A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py`, `crm/cobertura.py` e da função
+A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py` (com a mensagem de fechamento), `crm/cobertura.py` e da função
 `ddd_na_cobertura` de `crm/regioes.py`. Se o Agendamento do CRM
 mudar, mude também o `logica.js` e rode `testes/testar.py`.
 
@@ -64,3 +73,4 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
   fecham e o campo "Nome da cliente" que troca o {nome}. Galeria separada por plataforma e grupo (23/10/2026).
 - 03/11/2026: Galeria com "Marcar" em cada imagem e "Enviar marcadas": até 10 imagens de uma vez pelo compartilhar do
   celular (escolha o WhatsApp). "Enviar" e "Copiar" de uma imagem continuam como estavam.
+- 03/11/2026: mensagem de fechamento, Estoque indisponível e "Copiar para o CRM".

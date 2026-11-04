@@ -82,6 +82,8 @@
   function formatar() {
     if (!texto.value.trim()) { resultado.hidden = true; return; }
     var d = A.formatar(texto.value);
+    window.UltimosDados = d;
+    window.dispatchEvent(new CustomEvent("dados-formatados", { detail: d }));
     var cobertura = A.verificar(window.COBERTURA && window.COBERTURA.faixas, d.cep);
     var campos = document.getElementById("campos");
     campos.textContent = "";
@@ -123,6 +125,8 @@
   });
   document.getElementById("limpar").addEventListener("click", function () {
     texto.value = ""; gravar("agendamento-texto", ""); resultado.hidden = true; texto.focus();
+    window.UltimosDados = null;
+    window.dispatchEvent(new Event("dados-limpos"));
   });
   document.getElementById("colar").addEventListener("click", function () {
     if (!navigator.clipboard || !navigator.clipboard.readText) { texto.focus(); return; }
