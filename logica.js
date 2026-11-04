@@ -451,14 +451,24 @@
   var MARCA_DO_BLOCO = "#AGENDAMENTO-LUMIELLE";
   var CAMPOS_DO_BLOCO = ["nome", "telefone", "cpf", "cep", "rua", "numero", "complemento", "bairro", "cidade", "uf"];
 
-  function gerarBloco(campos, hoje, semEstoque) {
+  function kitEmTexto(link) {
+    var nome = nomeDoKit(link.qtde, link.grupo || null);
+    if (!nome) return null;
+    return nome + (link.preco !== null && link.preco !== undefined ? " · " + emReais(link.preco) : "");
+  }
+
+  function gerarBloco(campos, hoje, semEstoque, links) {
     var valor = function (chave) { return limparValor(campos[chave]); };
     var linhas = [MARCA_DO_BLOCO];
     CAMPOS_DO_BLOCO.forEach(function (c) { if (valor(c)) linhas.push(c + ": " + valor(c)); });
-    if (valor("link_id")) linhas.push("kit: " + valor("link_id"));
+    if (valor("link_id")) {
+      var link = (links || []).filter(function (l) { return String(l.id) === valor("link_id"); })[0];
+      if (link && kitEmTexto(link)) linhas.push("kit: " + kitEmTexto(link));
+      linhas.push("codigo do kit: " + valor("link_id"));
+    }
     var dia = diaDaEntrega(valor("dia_tipo"), valor("dia_data"), hoje);
     if (dia.texto) {
-      linhas.push("dia: " + valor("dia_tipo"));
+      linhas.push("dia: " + dia.texto);
       if (dia.data) linhas.push("data: " + dia.data);
       if (TURNOS[valor("turno")]) linhas.push("turno: " + valor("turno"));
     }
