@@ -94,6 +94,22 @@ ul.pequeno { padding-left: 1.1rem; }
 ul.pequeno:empty, p.pequeno:empty, #obs:empty { display: none; }
 .rodape { text-align: center; font-size: .75rem; color: var(--suave); margin: 0; }
 
+/* Mensagem de fechamento e Estoque indisponível (03/11/2026) */
+.campo-copiar { margin-top: .45rem; }
+.linha-copiar { display: flex; align-items: center; gap: .45rem; }
+.linha-copiar .campo { flex: 1 1 auto; min-width: 0; }
+.kit-detalhe { margin-top: .4rem; justify-content: space-between; }
+.kit-detalhe[hidden] { display: none; }
+.kit-preco { font-size: 1.05rem; }
+#fechamento .campo, #fechamento textarea { font-size: 16px; }
+select.campo { background: #fff; }
+input[type="date"].campo { min-height: 38px; }
+.botao-largo { width: 100%; margin-top: .5rem; }
+.botao:disabled { opacity: .45; cursor: not-allowed; }
+.texto-mensagem[hidden] { display: none; }
+#estoque-app summary { font-weight: 700; cursor: pointer; }
+.imagem-estoque { display: block; width: 100%; max-height: 240px; object-fit: contain; margin-top: .5rem; background: #f4ede3; border-radius: 6px; }
+
 /* Check-out */
 h3.grupo { font-size: .85rem; color: var(--suave); margin: .7rem 0 .2rem; font-weight: 500; }
 h2 + h3.grupo { margin-top: .2rem; }

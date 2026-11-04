@@ -177,6 +177,7 @@
 
   function mostrar(t) {
     textos = t;
+    window.dispatchEvent(new CustomEvent("mensagens-abertas", { detail: t }));
     limpar();
     var topo = elemento("section", "cartao filtros-mensagens");
     var segmento = elemento("div", "segmento");
@@ -206,6 +207,7 @@
     bloquear.addEventListener("click", function () {
       if (!confirm("Bloquear? Para abrir de novo, digite a senha.")) return;
       guardar(null); textos = null; nome = ""; busca = ""; pedirSenha();
+      window.dispatchEvent(new CustomEvent("mensagens-abertas", { detail: null }));
     });
     var rodape = elemento("p", "rodape");
     rodape.appendChild(bloquear);
