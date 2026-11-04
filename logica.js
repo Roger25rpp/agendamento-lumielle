@@ -362,7 +362,7 @@
 
   // ---------- Dia da entrega (datas sempre em aaaa-mm-dd, sem fuso) ----------
   var SEMANA = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado", "domingo"];
-  var QUANTO_ANTES = "a próxima rota disponível";
+  var QUANTO_ANTES = "a próxima data disponível";
   var TURNOS = { manha: ", de preferência pela manhã", tarde: ", de preferência à tarde" };
 
   function paraData(iso) {
