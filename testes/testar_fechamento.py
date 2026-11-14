@@ -76,7 +76,7 @@ def testar_exportacao():
             con.execute("INSERT INTO checkout_links (plataforma, oferta, qtde, preco, link, grupo, criado_em, atualizado_em) "
                         "VALUES ('Logzz', 'x', 3, 297.9, 'https://exemplo.com/x', 'normal', 'a', 'a')")
             con.execute("INSERT INTO imagens (titulo, arquivo, criado_em) VALUES ('Aviso', 'img_aviso.png', 'a')")
-        ag.salvar_estoque(con, "", "", 1)
+        ag.salvar_estoque(con, {}, 1)  # textos originais, imagem do aviso; a do acompanhamento fica a mesma
         con.close()
         links, _, textos = exportar_do_crm.ler_crm(banco)
         a = textos["agendamento"]
@@ -85,6 +85,10 @@ def testar_exportacao():
                                  (a["Logzz"] == ag.MODELO_LOGZZ and a["Braip"] == ag.MODELO_BRAIP, "textos do fechamento"),
                                  (a["estoque_sem_previsao"] == ag.MODELO_ESTOQUE_SEM_PREVISAO, "textos do estoque"),
                                  (a["estoque_imagem"] == "galeria/img_aviso.png", "imagem do estoque"),
+                                 (a["estoque_acompanhamento"] == ag.MODELO_ESTOQUE_ACOMPANHAMENTO
+                                  and a["estoque_acompanhamento_curto"] == ag.MODELO_ESTOQUE_ACOMPANHAMENTO_CURTO
+                                  and a["estoque_quando_chega"] == ag.MODELO_ESTOQUE_QUANDO_CHEGA, "textos do acompanhamento"),
+                                 (a["estoque_imagem_acompanhamento"] == "galeria/img_aviso.png", "imagem do acompanhamento (a do aviso)"),
                                  ("setor de agendamento" not in pacote and "Minha flor" not in pacote, "os textos vão embaralhados")):
             if not certo:
                 print("FALHOU:", descricao)
@@ -98,6 +102,14 @@ def testar_exportacao():
         try:
             mensagens.conferir_dados_pessoais(textos)
             print("FALHOU: a trava de dado pessoal não pegou o texto do agendamento")
+            erros += 1
+        except mensagens.DadoPessoal:
+            pass
+        textos["agendamento"]["estoque_previsao"] = ag.MODELO_ESTOQUE_PREVISAO
+        textos["agendamento"]["estoque_quando_chega"] = "Escreva para fulana@exemplo.com"
+        try:
+            mensagens.conferir_dados_pessoais(textos)
+            print("FALHOU: a trava de dado pessoal não pegou o texto do acompanhamento")
             erros += 1
         except mensagens.DadoPessoal:
             pass

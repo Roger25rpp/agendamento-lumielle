@@ -74,3 +74,7 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
 - 03/11/2026: Galeria com "Marcar" em cada imagem e "Enviar marcadas": até 10 imagens de uma vez pelo compartilhar do
   celular (escolha o WhatsApp). "Enviar" e "Copiar" de uma imagem continuam como estavam.
 - 03/11/2026: mensagem de fechamento, Estoque indisponível e "Copiar para o CRM".
+- 14/11/2026: Estoque indisponível com o "Acompanhamento (quando a falta demora)", igual ao CRM de 12/11: imagem do
+  acompanhamento e as mensagens EST-001 (completa), EST-002 (curta) e a resposta a "quando chega?", cada uma com Enviar e
+  Copiar. Os textos vêm de Configurações → Agendamento do CRM, no mesmo comando, embaralhados com a senha, e passam pela
+  mesma trava de dado pessoal. Só aparecem no celular depois que o Rogerio rodar o comando de exportar.

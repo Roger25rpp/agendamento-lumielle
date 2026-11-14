@@ -34,10 +34,18 @@ def textos_do_agendamento(con):
     sys.path.insert(0, CRM)
     from crm import agendamento
     modelos, estoque = agendamento.modelos(con), agendamento.estoque(con)
-    imagem = con.execute("SELECT arquivo FROM imagens WHERE id = ?", (estoque["imagem_id"],)).fetchone() if estoque["imagem_id"] else None
+    def caminho(imagem_id):
+        imagem = con.execute("SELECT arquivo FROM imagens WHERE id = ?", (imagem_id,)).fetchone() if imagem_id else None
+        return "galeria/" + os.path.basename(imagem["arquivo"]) if imagem else None
+    # Acompanhamento do estoque (CRM de 12/11/2026, no app em 14/11/2026): EST-001, EST-002, "quando chega?" e a imagem
+    # do acompanhamento (sem escolha, a mesma do aviso). CRM mais antigo, sem esses textos: ficam vazios.
     return {"Logzz": modelos["Logzz"], "Braip": modelos["Braip"], "estoque_previsao": estoque["previsao"],
             "estoque_sem_previsao": estoque["sem_previsao"],
-            "estoque_imagem": "galeria/" + os.path.basename(imagem["arquivo"]) if imagem else None}
+            "estoque_imagem": caminho(estoque["imagem_id"]),
+            "estoque_acompanhamento": estoque.get("acompanhamento", ""),
+            "estoque_acompanhamento_curto": estoque.get("acompanhamento_curto", ""),
+            "estoque_quando_chega": estoque.get("quando_chega", ""),
+            "estoque_imagem_acompanhamento": caminho(estoque.get("imagem_acompanhamento_id", estoque["imagem_id"]))}
 
 
 def ler_crm(banco):
