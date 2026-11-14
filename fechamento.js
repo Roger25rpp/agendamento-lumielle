@@ -269,12 +269,26 @@
     el.estoqueConteudo.textContent = "";
     el.estoqueBloqueio.textContent = a ? "" : "Para ver as mensagens, abra a aba Mensagens e digite a senha (só uma vez neste celular).";
     if (!a) return;
-    if (a.estoque_imagem) {
+    imagemEstoque(a.estoque_imagem, "Aviso de estoque indisponível");
+    cartaoTexto(el.estoqueConteudo, "Com previsão", "Só quando a reposição for certa: esta mensagem promete o dia.", a.estoque_previsao);
+    cartaoTexto(el.estoqueConteudo, "Sem previsão", "", a.estoque_sem_previsao);
+    // Acompanhamento (quando a falta demora): os mesmos textos do CRM (12/11/2026), no app desde 14/11/2026.
+    if (a.estoque_acompanhamento || a.estoque_acompanhamento_curto || a.estoque_quando_chega) {
+      el.estoqueConteudo.appendChild(elemento("h3", "grupo", "Acompanhamento (quando a falta demora)"));
+      el.estoqueConteudo.appendChild(elemento("p", "pequeno nota", "Depois do primeiro aviso, de tempos em tempos, com a imagem. Primeiro a completa; para quem já recebeu, a curta. Sem prometer data."));
+      imagemEstoque(a.estoque_imagem_acompanhamento, "Acompanhamento do estoque indisponível");
+      if (a.estoque_acompanhamento) cartaoTexto(el.estoqueConteudo, "EST-001 · Completa (primeiro acompanhamento)", "", a.estoque_acompanhamento);
+      if (a.estoque_acompanhamento_curto) cartaoTexto(el.estoqueConteudo, "EST-002 · Curta (para quem já recebeu a EST-001)", "", a.estoque_acompanhamento_curto);
+      if (a.estoque_quando_chega) cartaoTexto(el.estoqueConteudo, "Se ela perguntar \"quando chega?\"", "", a.estoque_quando_chega);
+    }
+  }
+  function imagemEstoque(arquivo, descricao) {
+    if (arquivo) {
       var foto = elemento("img", "imagem-estoque");
-      foto.src = a.estoque_imagem; foto.alt = "Aviso de estoque indisponível";
+      foto.src = arquivo; foto.alt = descricao;
       el.estoqueConteudo.appendChild(foto);
       var acoes = elemento("div", "acoes"), enviar = botao("Enviar imagem", "cobre"), copiar = botao("Copiar imagem", "claro");
-      var img = { arquivo: a.estoque_imagem };
+      var img = { arquivo: arquivo };
       enviar.addEventListener("click", function () {
         window.ImagensApp.arquivoDaImagem(img).then(function (arquivo) {
           if (navigator.canShare && navigator.canShare({ files: [arquivo] })) return navigator.share({ files: [arquivo] });
@@ -289,8 +303,6 @@
       acoes.appendChild(enviar); acoes.appendChild(copiar);
       el.estoqueConteudo.appendChild(acoes);
     }
-    cartaoTexto(el.estoqueConteudo, "Com previsão", "Só quando a reposição for certa: esta mensagem promete o dia.", a.estoque_previsao);
-    cartaoTexto(el.estoqueConteudo, "Sem previsão", "", a.estoque_sem_previsao);
   }
 
   // ---------- Ligações com o resto do app ----------
