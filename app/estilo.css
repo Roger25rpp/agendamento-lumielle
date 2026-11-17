@@ -168,3 +168,15 @@ h3.titulo-objecao { font-size: .95rem; margin: .4rem 0 .1rem; color: var(--cobre
 .texto-mensagem { white-space: pre-wrap; overflow-wrap: anywhere; margin: .35rem 0 0; font-size: .95rem; }
 .mensagem .acoes .botao { min-height: 34px; padding: .2rem .5rem; }
 .pequeno-botao { font-size: .8rem; min-height: 30px; margin-top: .4rem; }
+/* Objeções em botões (17/11/2026): código + título, 3 por linha; a resposta aberta aparece abaixo da grade */
+.secao-objecoes { padding: .6rem .6rem .7rem; }
+h2.titulo-secao { font-size: 1rem; margin: 0 0 .5rem; }
+.grade-objecoes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+.botao-objecao { display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; min-width: 0; text-align: left;
+  font: inherit; font-size: .75rem; line-height: 1.3; color: var(--marrom); background: #fff; padding: .45rem .4rem;
+  border: 1px solid var(--linha); border-radius: 8px; cursor: pointer; }
+.botao-objecao[aria-pressed="true"] { border-color: var(--cobre); background: #fff2e0; }
+.botao-objecao .titulo-botao { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.objecao.aberta { margin-top: .6rem; padding: .3rem .6rem .2rem; border: 2px solid var(--cobre); border-radius: 8px; scroll-margin-top: .5rem; }
+.topo-objecao { display: flex; justify-content: space-between; align-items: flex-start; gap: .4rem; }
+.topo-objecao .pequeno-botao { margin-top: .3rem; }

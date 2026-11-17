@@ -6,7 +6,7 @@
   var DADOS = window.DADOS, PACOTE = DADOS && DADOS.mensagens;
   var GUARDA = "lumielle-mensagens-chave";
   var raiz = document.getElementById("conteudo-mensagens");
-  var textos = null, parte = "respostas", abertos = {}, busca = "", nome = "";
+  var textos = null, parte = "respostas", abertos = {}, busca = "", nome = "", objecaoAberta = "";
 
   function elemento(tag, classe, conteudo) {
     var el = document.createElement(tag);
@@ -128,6 +128,25 @@
     return sanfona;
   }
 
+  function blocoObjecao(o, lista) {  // a resposta completa: dor, objetivo, orientação e as mensagens com Enviar e Copiar
+    var bloco = elemento("div", "objecao aberta");
+    bloco.id = "objecao-aberta";
+    var topo = elemento("div", "topo-objecao");
+    topo.appendChild(elemento("h3", "titulo-objecao", o.codigo + " · " + o.titulo));
+    var fechar = botao("Fechar", "claro pequeno-botao");
+    fechar.addEventListener("click", function () { objecaoAberta = ""; montarLista(lista); });
+    topo.appendChild(fechar);
+    bloco.appendChild(topo);
+    if (o.dor) bloco.appendChild(elemento("p", "pequeno detalhe", "A cliente: " + o.dor));
+    if (o.resultado) bloco.appendChild(elemento("p", "pequeno detalhe", "Resultado esperado: " + o.resultado));
+    if (o.nota) bloco.appendChild(elemento("p", "pequeno detalhe", o.nota));
+    o.mensagens.forEach(function (m, i) {
+      var rotulo = m.rotulo || (o.mensagens.length > 1 ? "Mensagem " + (i + 1) : "Mensagem");
+      bloco.appendChild(cartaoMensagem(rotulo, "", m.texto));
+    });
+    return bloco;
+  }
+
   function acha() {
     var termo = simples(busca).trim();
     return function () {
@@ -156,20 +175,31 @@
         });
         if (!itens.length) return;
         total += itens.length;
-        lista.appendChild(grupo("o" + n, s.secao, itens.length, s.nota, function (caixa) {
-          itens.forEach(function (o) {
-            var bloco = elemento("div", "objecao");
-            bloco.appendChild(elemento("h3", "titulo-objecao", o.codigo + " · " + o.titulo));
-            if (o.dor) bloco.appendChild(elemento("p", "pequeno detalhe", "Dor: " + o.dor));
-            if (o.resultado) bloco.appendChild(elemento("p", "pequeno detalhe", "Objetivo: " + o.resultado));
-            if (o.nota) bloco.appendChild(elemento("p", "pequeno detalhe", o.nota));
-            o.mensagens.forEach(function (m, i) {
-              var rotulo = m.rotulo || (o.mensagens.length > 1 ? "Mensagem " + (i + 1) : "Mensagem");
-              bloco.appendChild(cartaoMensagem(rotulo, "", m.texto));
-            });
-            caixa.appendChild(bloco);
+        // 17/11/2026: um botão por resposta (código + título), 3 por linha; tocar abre a resposta logo abaixo da grade
+        var secao = elemento("section", "cartao secao-objecoes");
+        var cabeca = elemento("h2", "titulo-secao", s.secao + " ");
+        cabeca.appendChild(elemento("span", "pequeno", "(" + itens.length + ")"));
+        secao.appendChild(cabeca);
+        var grade = elemento("div", "grade-objecoes");
+        var aberta = null;
+        itens.forEach(function (o) {
+          var b = elemento("button", "botao-objecao");
+          b.type = "button";
+          b.setAttribute("aria-pressed", o.codigo === objecaoAberta ? "true" : "false");
+          b.appendChild(elemento("span", "codigo", o.codigo));
+          b.appendChild(elemento("span", "titulo-botao", o.titulo));
+          b.addEventListener("click", function () {
+            objecaoAberta = objecaoAberta === o.codigo ? "" : o.codigo;
+            montarLista(lista);
+            var alvo = document.getElementById("objecao-aberta");
+            if (alvo && alvo.scrollIntoView) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
           });
-        }));
+          grade.appendChild(b);
+          if (o.codigo === objecaoAberta) aberta = o;
+        });
+        secao.appendChild(grade);
+        if (aberta) secao.appendChild(blocoObjecao(aberta, lista));
+        lista.appendChild(secao);
       });
     }
     if (!total) lista.appendChild(elemento("p", "cartao vazio", busca ? "Nada encontrado." : "Nenhuma mensagem."));

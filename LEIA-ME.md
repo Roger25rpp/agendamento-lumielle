@@ -41,6 +41,9 @@ a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do
   de novo se a senha mudar, se os dados do navegador forem apagados ou num celular novo.
 - Esqueceu a senha? Escreva uma nova no arquivo, rode o comando e digite a nova no celular. Nada se perde.
 - Trava: se algum texto tiver cara de telefone, CPF, e-mail ou CEP, **nada é publicado** e o comando diz qual texto é.
+- **Objeções em botões (17/11/2026):** em Mensagens → Objeções, cada resposta é um botão com o código e o título, 3 por
+  linha, separados por seção. Tocar abre a resposta completa logo abaixo (a cliente, resultado esperado, orientação e as
+  mensagens com Enviar e Copiar); "Fechar" ou tocar de novo fecha. A busca filtra os botões.
 - `app/cifra.js` e `ferramentas/mensagens.py` fazem o mesmo embaralhamento; `testes/testar_mensagens.py` confere os dois
   (roda junto com o `testes/testar.py`).
 
