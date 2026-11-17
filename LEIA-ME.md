@@ -25,9 +25,11 @@ com o seu "Copiar". Também avisa se o CEP está na cobertura da Logzz, mostra s
    pega na segunda abertura.
 
 ## Quando mudar os links de checkout ou a Galeria no CRM
-No computador, na conversa com o Claude (pasta do CRM), digite sem espaço depois do `!`:
+No computador, cole esta linha na conversa do Claude Code (qualquer pasta), com o `!` na frente:
 
-    !.venv/Scripts/python ../Agendamento-Lumielle/ferramentas/exportar_do_crm.py
+    ! cd /c/CRM-Lumielle && .venv/Scripts/python ../Agendamento-Lumielle/ferramentas/exportar_do_crm.py
+
+O Claude não roda esse comando: ele lê o banco real do CRM, então quem roda é o Rogerio (17/11/2026).
 
 Ele abre o banco do CRM só para leitura, pega só os links de checkout e as imagens da Galeria (nada de cliente), atualiza
 a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do app (decisão de 13/10/2026: só produto).
