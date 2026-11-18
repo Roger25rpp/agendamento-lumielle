@@ -55,6 +55,9 @@ a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do
   a senha digitada neste celular, a mensagem não aparece.
 - "Copiar para o CRM" gera um bloco que começa com `#AGENDAMENTO-LUMIELLE`. Mande para você mesmo e, no computador, cole em
   Dados da cliente, no Agendamento do CRM. Nada sai do celular sozinho.
+- O inverso (18/11/2026): na ficha do lead do CRM, "Levar para o celular" copia o mesmo bloco com o agendamento gravado.
+  Mande para você mesmo, copie no celular e toque em "Colar": dados, endereço, kit, dia e turno ficam preenchidos (o que
+  estava nesses campos é trocado). Dia que já passou fica de fora; escolha de novo.
 - O que está nos campos fica só no celular até tocar em Limpar, em Dados da cliente. Limpe antes de começar outra cliente.
 - `testes/testar_fechamento.py` confere o app contra o CRM (roda junto com o `testes/testar.py`).
 
@@ -83,3 +86,4 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
   acompanhamento e as mensagens EST-001 (completa), EST-002 (curta) e a resposta a "quando chega?", cada uma com Enviar e
   Copiar. Os textos vêm de Configurações → Agendamento do CRM, no mesmo comando, embaralhados com a senha, e passam pela
   mesma trava de dado pessoal. Só aparecem no celular depois que o Rogerio rodar o comando de exportar.
+- 18/11/2026: o "Colar" reconhece o bloco do "Levar para o celular" do CRM e preenche a mensagem de fechamento.

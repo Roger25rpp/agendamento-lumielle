@@ -124,9 +124,21 @@ def main():
             for n in range(-5, 30) for b in range(0, 7) for t in ("amanha", "data", "quanto_antes", "")]
     kits_nomes = [[q, g] for q in (None, 0, 1, 2, 3, 4, 7, 13) for g in ("normal", "extra", "plus", "desconto", None)]
     reais = [0, 1, 197.9, 297.9, 1000, 1397.9, 12345.5, 1234567.89]
+    # Do CRM para o celular (18/11/2026): o app lê o bloco igual ao CRM, inclusive com o cabeçalho do WhatsApp e lido outro dia
+    para_ler = []
+    for caso in lista_fechamentos[:1500]:
+        bloco = ag.gerar_bloco(caso["campos"], date.fromisoformat(caso["hoje"]), caso["sem_estoque"], LINKS)
+        outro_dia = (date.fromisoformat(caso["hoje"]) + timedelta(days=sorte.randint(0, 3))).isoformat()
+        para_ler.append([bloco, outro_dia])
+        para_ler.append(["\n".join("[10:32, 18/11/2026] Rogerio: " + l for l in bloco.splitlines()), caso["hoje"]])
+    para_ler += [[t, "2026-11-03"] for t in (
+        "", "sem marca", "#AGENDAMENTO-LUMIELLE", "oi\n#AGENDAMENTO-LUMIELLE\nnome: Ana\nnome: Bia\nturno: constructor",
+        "#AGENDAMENTO-LUMIELLE\nkit: 3\ndia: amanhã, quarta-feira (04/11)\ndata: 2026-11-04\nturno: tarde",
+        "#AGENDAMENTO-LUMIELLE\nconstructor: x\nDIA: a próxima rota disponível\nestoque: indisponivel",
+        "#AGENDAMENTO-LUMIELLE\ncpf: 529.982.247-25\ncep: 30130000\ndia: 05/11\ndata: 2026-11-05")]
     js = subprocess.run(["node", os.path.join(PASTA, "rodar_fechamento.js")], capture_output=True, text=True, encoding="utf-8", check=True,
                         input=json.dumps({"enderecos": lista_enderecos, "fechamentos": lista_fechamentos, "links": LINKS, "modelos": MODELOS, "dias": dias,
-                                          "kitsNomes": kits_nomes, "reais": reais, "nomes": NOMES}))
+                                          "kitsNomes": kits_nomes, "reais": reais, "nomes": NOMES, "paraLer": para_ler}))
     app = json.loads(js.stdout)
     erros, total = 0, 0
 
@@ -150,6 +162,10 @@ def main():
             continue
         comparar("bloco lido", caso, bool(caso["sem_estoque"]), lido["sem_estoque"])
         comparar("mensagem pelo bloco", caso, obtido["mensagem"], ag.fechamento(lido, LINKS, caso["situacao"], MODELOS, dia)["mensagem"])
+    for (texto, dia), obtido, texto_app in zip(para_ler, app["lidos"], app["textosDoBloco"]):
+        lido = ag.ler_bloco(texto, date.fromisoformat(dia))
+        comparar("bloco lido no app", texto, lido, obtido)
+        comparar("dados do bloco no app", texto, ag.texto_do_bloco(lido) if lido else None, texto_app)
     for d, obtido in zip(dias, app["dias"]):
         comparar("dia", d, ag.dia_da_entrega(d[0], d[1], date.fromisoformat(d[2])), obtido)
     for k, obtido in zip(kits_nomes, app["kits"]):

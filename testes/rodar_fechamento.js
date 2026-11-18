@@ -8,6 +8,8 @@ process.stdin.on("end", () => {
     enderecos: c.enderecos.map((t) => A.separarEndereco(t)),
     fechamentos: c.fechamentos.map((f) => A.fechamento(f.campos, c.links, f.situacao, c.modelos, f.hoje)),
     blocos: c.fechamentos.map((f) => A.gerarBloco(f.campos, f.hoje, f.sem_estoque, c.links)),
+    lidos: c.paraLer.map((p) => A.lerBloco(p[0], p[1])),
+    textosDoBloco: c.paraLer.map((p) => { const b = A.lerBloco(p[0], p[1]); return b ? A.textoDoBloco(b) : null; }),
     dias: c.dias.map((d) => A.diaDaEntrega(d[0], d[1], d[2])),
     kits: c.kitsNomes.map((k) => A.nomeDoKit(k[0], k[1])),
     reais: c.reais.map((v) => A.emReais(v)),
