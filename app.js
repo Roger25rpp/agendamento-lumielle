@@ -79,11 +79,19 @@
                                                "Quem decide é o CEP" + (temCep ? " (acima)." : ".")));
   }
 
-  function formatar() {
+  function hoje() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  // aplicarBloco: só no Colar e no Formatar. Ao reabrir o app, vale o que foi editado depois de colar.
+  function formatar(aplicarBloco) {
     if (!texto.value.trim()) { resultado.hidden = true; return; }
-    var d = A.formatar(texto.value);
+    var bloco = A.lerBloco(texto.value, hoje());  // "Levar para o celular" do CRM (18/11/2026)
+    var d = A.formatar(bloco ? A.textoDoBloco(bloco) : texto.value);
     window.UltimosDados = d;
     window.dispatchEvent(new CustomEvent("dados-formatados", { detail: d }));
+    if (bloco && aplicarBloco) window.dispatchEvent(new CustomEvent("bloco-colado", { detail: bloco }));
     var cobertura = A.verificar(window.COBERTURA && window.COBERTURA.faixas, d.cep);
     var campos = document.getElementById("campos");
     campos.textContent = "";
@@ -121,7 +129,7 @@
 
   document.getElementById("formatar").addEventListener("click", function () {
     gravar("agendamento-texto", texto.value);
-    formatar();
+    formatar(true);
   });
   document.getElementById("limpar").addEventListener("click", function () {
     texto.value = ""; gravar("agendamento-texto", ""); resultado.hidden = true; texto.focus();
@@ -137,7 +145,7 @@
       var antes = texto.value.replace(/\s+$/, "");
       texto.value = (antes ? antes + "\n" : "") + colado + "\n";
       texto.scrollTop = texto.scrollHeight;
-      gravar("agendamento-texto", texto.value); formatar();
+      gravar("agendamento-texto", texto.value); formatar(true);
     }, function () { texto.focus(); });  // sem permissão: deixa colar à mão (toque longo no quadro → Colar)
   });
   texto.addEventListener("input", function () { gravar("agendamento-texto", texto.value); });

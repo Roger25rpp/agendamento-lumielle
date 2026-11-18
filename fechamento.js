@@ -314,6 +314,18 @@
     atualizar();
   }
   window.addEventListener("dados-formatados", function (e) { usarDadosDaCliente(e.detail); });
+  // "Levar para o celular" do CRM (18/11/2026): o bloco traz endereço, kit e dia; substitui o que estava nesses campos.
+  window.addEventListener("bloco-colado", function (e) {
+    var b = e.detail;
+    ENDERECO.forEach(function (c) { estado[c[0]] = b[c[0]] || ""; entradas[c[0]].value = estado[c[0]]; });
+    estado.endereco = [b.rua, b.numero, b.complemento, b.bairro, b.cidade, b.uf].filter(Boolean).join(", ");
+    el.enderecoTexto.value = estado.endereco;
+    var kit = LINKS.some(function (l) { return String(l.id) === b.link_id; }) ? b.link_id : "";
+    estado.kit = kit;
+    estado.dia_tipo = b.dia_tipo; estado.dia_data = b.dia_data; estado.turno = b.turno;
+    el.sobras.textContent = b.link_id && !kit ? "O kit do CRM não está no app: publique o app de novo ou escolha o kit." : "";
+    atualizar();
+  });
   window.addEventListener("dados-limpos", function () {  // Limpar: começa outra cliente
     estado = {};
     Object.keys(entradas).forEach(function (c) { entradas[c].value = ""; });

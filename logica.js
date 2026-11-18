@@ -476,6 +476,45 @@
     return linhas.join("\n");
   }
 
+  // Do CRM para o celular (18/11/2026): o "Levar para o celular" da ficha do lead gera o mesmo bloco; aqui ele é lido.
+  // Cópia de ler_bloco, _tipo_do_dia e texto_do_bloco (crm/agendamento.py).
+  function tipoDoDia(dia, data) {
+    if (["amanha", "quanto_antes", "data"].indexOf(dia) >= 0) return dia;
+    if (dia.indexOf("a próxima ") === 0) return "quanto_antes";
+    if (dia.indexOf("amanhã") === 0) return "amanha";
+    return dia && data ? "data" : "";
+  }
+
+  function lerBloco(texto, hoje) {
+    var linhas = String(texto || "").split(QUEBRAS).map(function (l) { return tirarPrefixo(l.trim()).trim(); });
+    var inicio = linhas.indexOf(MARCA_DO_BLOCO);
+    if (inicio < 0) return null;
+    var lidos = Object.create(null);
+    linhas.slice(inicio + 1).forEach(function (linha) {
+      var i = linha.indexOf(":");
+      var chave = (i < 0 ? linha : linha.slice(0, i)).trim().toLowerCase(), valor = i < 0 ? "" : linha.slice(i + 1).trim();
+      if (valor && !(chave in lidos)) lidos[chave] = valor;
+    });
+    var campos = {};
+    CAMPOS_DO_BLOCO.forEach(function (c) { campos[c] = lidos[c] || ""; });
+    var data = lidos.data || "", tipo = tipoDoDia(lidos.dia || "", data);
+    if (tipo === "amanha" && diaDaEntrega("amanha", "", hoje).data !== data) tipo = "data";
+    var kitAntigo = /^\d+$/.test(lidos.kit || "") ? lidos.kit : "";
+    campos.link_id = lidos["codigo do kit"] || kitAntigo;
+    campos.dia_tipo = ["amanha", "quanto_antes", "data"].indexOf(tipo) >= 0 ? tipo : "";
+    campos.dia_data = data;
+    campos.turno = Object.prototype.hasOwnProperty.call(TURNOS, lidos.turno || "") ? lidos.turno : "";
+    campos.sem_estoque = lidos.estoque === "indisponivel";
+    return campos;
+  }
+
+  function textoDoBloco(campos) {
+    return [["Nome", "nome"], ["CPF", "cpf"], ["Telefone", "telefone"], ["CEP", "cep"]]
+      .filter(function (p) { return campos[p[1]]; })
+      .map(function (p) { return p[0] + ": " + campos[p[1]]; }).join("\n");
+  }
+
+  api.lerBloco = lerBloco; api.textoDoBloco = textoDoBloco;
   api.separarEndereco = separarEndereco; api.nomeDoKit = nomeDoKit; api.emReais = emReais; api.kits = kits;
   api.diaDaEntrega = diaDaEntrega; api.primeiroNome = primeiroNome; api.preencherModelo = preencherModelo;
   api.fechamento = fechamento; api.gerarBloco = gerarBloco; api.normalizarTelefone = normalizarTelefone;
