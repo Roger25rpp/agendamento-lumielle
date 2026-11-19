@@ -281,6 +281,13 @@
       if (a.estoque_acompanhamento_curto) cartaoTexto(el.estoqueConteudo, "EST-002 · Curta (para quem já recebeu a EST-001)", "", a.estoque_acompanhamento_curto);
       if (a.estoque_quando_chega) cartaoTexto(el.estoqueConteudo, "Se ela perguntar \"quando chega?\"", "", a.estoque_quando_chega);
     }
+    // Estoque voltou (CRM de 19/11/2026): depois de reagendar na Logzz.
+    if (a.estoque_voltou || a.estoque_voltou_curto) {
+      el.estoqueConteudo.appendChild(elemento("h3", "grupo", "Estoque voltou (depois de reagendar na Logzz)"));
+      el.estoqueConteudo.appendChild(elemento("p", "pequeno nota", "Troque o que está entre colchetes pelo dia e turno agendados. \"Pagamento na entrega\" vale só para a Logzz."));
+      if (a.estoque_voltou) cartaoTexto(el.estoqueConteudo, "EST-004 · Estoque voltou", "", a.estoque_voltou);
+      if (a.estoque_voltou_curto) cartaoTexto(el.estoqueConteudo, "EST-005 · Estoque voltou (curta)", "", a.estoque_voltou_curto);
+    }
   }
   function imagemEstoque(arquivo, descricao) {
     if (arquivo) {
