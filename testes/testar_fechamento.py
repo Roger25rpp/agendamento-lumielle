@@ -88,6 +88,8 @@ def testar_exportacao():
                                  (a["estoque_acompanhamento"] == ag.MODELO_ESTOQUE_ACOMPANHAMENTO
                                   and a["estoque_acompanhamento_curto"] == ag.MODELO_ESTOQUE_ACOMPANHAMENTO_CURTO
                                   and a["estoque_quando_chega"] == ag.MODELO_ESTOQUE_QUANDO_CHEGA, "textos do acompanhamento"),
+                                 (a["estoque_voltou"] == ag.MODELO_ESTOQUE_VOLTOU
+                                  and a["estoque_voltou_curto"] == ag.MODELO_ESTOQUE_VOLTOU_CURTO, "textos do estoque voltou"),
                                  (a["estoque_imagem_acompanhamento"] == "galeria/img_aviso.png", "imagem do acompanhamento (a do aviso)"),
                                  ("setor de agendamento" not in pacote and "Minha flor" not in pacote, "os textos vão embaralhados")):
             if not certo:

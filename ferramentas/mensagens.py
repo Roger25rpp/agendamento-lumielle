@@ -124,6 +124,7 @@ def conferir_dados_pessoais(mensagens):
     a = mensagens.get("agendamento")
     if a:
         olhar("Configurações → Agendamento", a["Logzz"], a["Braip"], a["estoque_previsao"], a["estoque_sem_previsao"],
-              a.get("estoque_acompanhamento"), a.get("estoque_acompanhamento_curto"), a.get("estoque_quando_chega"))
+              a.get("estoque_acompanhamento"), a.get("estoque_acompanhamento_curto"), a.get("estoque_quando_chega"),
+              a.get("estoque_voltou"), a.get("estoque_voltou_curto"))
     if achados:
         raise DadoPessoal(achados)

@@ -45,6 +45,9 @@ def textos_do_agendamento(con):
             "estoque_acompanhamento": estoque.get("acompanhamento", ""),
             "estoque_acompanhamento_curto": estoque.get("acompanhamento_curto", ""),
             "estoque_quando_chega": estoque.get("quando_chega", ""),
+            # Estoque voltou (CRM de 19/11/2026): EST-003 e EST-004. CRM mais antigo: ficam vazios.
+            "estoque_voltou": estoque.get("voltou", ""),
+            "estoque_voltou_curto": estoque.get("voltou_curto", ""),
             "estoque_imagem_acompanhamento": caminho(estoque.get("imagem_acompanhamento_id", estoque["imagem_id"]))}
 
 
