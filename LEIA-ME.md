@@ -46,6 +46,8 @@ a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do
 - **Objeções em botões (17/11/2026):** em Mensagens → Objeções, cada resposta é um botão com o código e o título, 3 por
   linha, separados por seção. Tocar abre a resposta completa logo abaixo (a cliente, resultado esperado, orientação e as
   mensagens com Enviar e Copiar); "Fechar" ou tocar de novo fecha. A busca filtra os botões.
+- **Respostas em botões (21/11/2026):** Mensagens → Respostas igual: um botão por resposta (o título), 3 por linha, por
+  grupo; tocar abre a resposta logo abaixo, com Enviar e Copiar.
 - `app/cifra.js` e `ferramentas/mensagens.py` fazem o mesmo embaralhamento; `testes/testar_mensagens.py` confere os dois
   (roda junto com o `testes/testar.py`).
 
