@@ -435,16 +435,22 @@
       if (dia.erro) avisos.push(dia.erro);
       if (!dia.texto) faltando.push("dia");
     }
-    var mensagem = null;
-    if (!faltando.length && plataforma) {
-      var complemento = valor("complemento");
-      mensagem = preencherModelo(modelos[plataforma], {
-        "primeiro nome": primeiro, kit: kit.nome, "preço": kit.preco_texto, dia: dia.texto || "",
+    var mensagem = null, registrado = null, complemento = valor("complemento");
+    var camposDoModelo = function () {
+      return { "primeiro nome": primeiro, kit: kit.nome, "preço": kit.preco_texto, dia: dia.texto || "",
         turno: TURNOS[valor("turno")] || "", rua: valor("rua"), "número": valor("numero"),
         complemento: complemento ? ", " + complemento : "", bairro: valor("bairro"), cidade: valor("cidade"),
-        CEP: cep.slice(0, 5) + "-" + cep.slice(5) });
+        CEP: cep.slice(0, 5) + "-" + cep.slice(5) };
+    };
+    if (!faltando.length && plataforma) mensagem = preencherModelo(modelos[plataforma], camposDoModelo());
+    // Pedido registrado (CRM de 21/11/2026): legenda da imagem para quem ficou sem estoque. Só Logzz; não precisa do dia.
+    if (plataforma === "Logzz" && modelos.registrado && !faltando.filter(function (f) { return f !== "dia"; }).length) {
+      var c = camposDoModelo();
+      c.kit = c.kit.slice(0, 1).toUpperCase() + c.kit.slice(1);
+      registrado = preencherModelo(modelos.registrado, c);
     }
-    return { plataforma: plataforma, grupos: grupos, kit: kit, dia: dia, faltando: faltando, avisos: avisos, mensagem: mensagem };
+    return { plataforma: plataforma, grupos: grupos, kit: kit, dia: dia, faltando: faltando, avisos: avisos, mensagem: mensagem,
+             registrado: registrado };
   }
 
   // ---------- Ponte para o CRM, sem internet ----------
