@@ -209,6 +209,7 @@
     var cep = (estado.cep || "").replace(/\D/g, "");
     var cob = A.verificar(window.COBERTURA && window.COBERTURA.faixas, cep);
     var modelos = textos && textos.agendamento ? textos.agendamento : { Logzz: "", Braip: "" };
+    modelos = { Logzz: modelos.Logzz, Braip: modelos.Braip, registrado: modelos.estoque_registrado || "" };
     var r = A.fechamento(campos(), LINKS, cob.situacao, modelos, hoje());
     ultimo = r;
     el.plataforma.className = "cobertura" + (r.plataforma === "Logzz" ? " atende" : r.plataforma === "Braip" ? " fora" : "");
@@ -272,6 +273,14 @@
     imagemEstoque(a.estoque_imagem, "Aviso de estoque indisponível");
     cartaoTexto(el.estoqueConteudo, "Com previsão", "Só quando a reposição for certa: esta mensagem promete o dia.", a.estoque_previsao);
     cartaoTexto(el.estoqueConteudo, "Sem previsão", "", a.estoque_sem_previsao);
+    // Pedido registrado (CRM de 21/11/2026): imagem com a legenda montada pelos campos do fechamento.
+    if (a.estoque_registrado) {
+      el.estoqueConteudo.appendChild(elemento("h3", "grupo", "Pedido registrado (mande logo depois do aviso)"));
+      el.estoqueConteudo.appendChild(elemento("p", "pequeno nota", "A imagem com esta legenda, num balão só: envie a imagem e cole a legenda embaixo. Kit, preço e endereço saem da mensagem de fechamento (o dia não precisa). Só para a Logzz."));
+      imagemEstoque(a.estoque_imagem_registrado, "Pedido registrado");
+      if (ultimo && ultimo.registrado) cartaoTexto(el.estoqueConteudo, "Legenda", "", ultimo.registrado);
+      else el.estoqueConteudo.appendChild(elemento("p", "pequeno texto-alerta", "Preencha a mensagem de fechamento (CEP da Logzz, kit e endereço)."));
+    }
     // Acompanhamento (quando a falta demora): os mesmos textos do CRM (12/11/2026), no app desde 14/11/2026.
     if (a.estoque_acompanhamento || a.estoque_acompanhamento_curto || a.estoque_quando_chega) {
       el.estoqueConteudo.appendChild(elemento("h3", "grupo", "Acompanhamento (quando a falta demora)"));

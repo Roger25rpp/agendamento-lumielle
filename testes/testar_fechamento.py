@@ -35,7 +35,7 @@ LINKS = [{"id": 1, "plataforma": "Logzz", "grupo": "normal", "qtde": 1, "preco":
          {"id": 7, "plataforma": "Braip", "grupo": "normal", "qtde": 3, "preco": 297.9, "oferta": "g", "link": "https://exemplo.com/7"},
          {"id": 8, "plataforma": "Braip", "grupo": "extra", "qtde": 5, "preco": None, "oferta": "h", "link": "https://exemplo.com/8"},
          {"id": 9, "plataforma": "Braip", "grupo": None, "qtde": 2, "preco": 100, "oferta": "i", "link": "https://exemplo.com/9"}]
-MODELOS = {"Logzz": ag.MODELO_LOGZZ, "Braip": ag.MODELO_BRAIP}
+MODELOS = {"Logzz": ag.MODELO_LOGZZ, "Braip": ag.MODELO_BRAIP, "registrado": ag.MODELO_ESTOQUE_REGISTRADO}
 NOMES = ["Maria de Souza", "ana", "ROGERIO .", ".", "", "  josé   lima ", "Ç é"]
 
 
@@ -90,6 +90,8 @@ def testar_exportacao():
                                   and a["estoque_quando_chega"] == ag.MODELO_ESTOQUE_QUANDO_CHEGA, "textos do acompanhamento"),
                                  (a["estoque_voltou"] == ag.MODELO_ESTOQUE_VOLTOU
                                   and a["estoque_voltou_curto"] == ag.MODELO_ESTOQUE_VOLTOU_CURTO, "textos do estoque voltou"),
+                                 (a["estoque_registrado"] == ag.MODELO_ESTOQUE_REGISTRADO
+                                  and a["estoque_imagem_registrado"] is None, "legenda do pedido registrado"),
                                  (a["estoque_imagem_acompanhamento"] == "galeria/img_aviso.png", "imagem do acompanhamento (a do aviso)"),
                                  ("setor de agendamento" not in pacote and "Minha flor" not in pacote, "os textos vão embaralhados")):
             if not certo:

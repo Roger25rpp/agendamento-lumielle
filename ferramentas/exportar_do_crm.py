@@ -48,6 +48,9 @@ def textos_do_agendamento(con):
             # Estoque voltou (CRM de 19/11/2026): EST-003 e EST-004. CRM mais antigo: ficam vazios.
             "estoque_voltou": estoque.get("voltou", ""),
             "estoque_voltou_curto": estoque.get("voltou_curto", ""),
+            # Pedido registrado (CRM de 21/11/2026): legenda e imagem própria. CRM mais antigo: ficam vazios.
+            "estoque_registrado": estoque.get("registrado", ""),
+            "estoque_imagem_registrado": caminho(estoque.get("imagem_registrado_id")),
             "estoque_imagem_acompanhamento": caminho(estoque.get("imagem_acompanhamento_id", estoque["imagem_id"]))}
 
 
