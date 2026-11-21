@@ -6,7 +6,7 @@
   var DADOS = window.DADOS, PACOTE = DADOS && DADOS.mensagens;
   var GUARDA = "lumielle-mensagens-chave";
   var raiz = document.getElementById("conteudo-mensagens");
-  var textos = null, parte = "respostas", abertos = {}, busca = "", nome = "", objecaoAberta = "";
+  var textos = null, parte = "respostas", busca = "", nome = "", objecaoAberta = "", respostaAberta = "";
 
   function elemento(tag, classe, conteudo) {
     var el = document.createElement(tag);
@@ -116,18 +116,6 @@
     return cartao;
   }
 
-  function grupo(chave, titulo, quantos, nota, montar) {
-    var sanfona = elemento("details", "cartao grupo-mensagens");
-    sanfona.open = !!busca || !!abertos[chave];
-    sanfona.addEventListener("toggle", function () { if (!busca) abertos[chave] = sanfona.open; });
-    var resumo = elemento("summary", null, titulo + " ");
-    resumo.appendChild(elemento("span", "pequeno", "(" + quantos + ")"));
-    sanfona.appendChild(resumo);
-    if (nota) sanfona.appendChild(elemento("p", "pequeno detalhe", nota));
-    montar(sanfona);
-    return sanfona;
-  }
-
   function blocoObjecao(o, lista) {  // a resposta completa: dor, objetivo, orientação e as mensagens com Enviar e Copiar
     var bloco = elemento("div", "objecao aberta");
     bloco.id = "objecao-aberta";
@@ -159,13 +147,47 @@
     while (lista.firstChild) lista.removeChild(lista.firstChild);
     var bate = acha(), total = 0;
     if (parte === "respostas") {
+      // 21/11/2026: como nas Objeções, um botão por resposta (título), 3 por linha; tocar abre a resposta logo abaixo da grade
       textos.respostas.forEach(function (g, n) {
         var itens = g.itens.filter(function (r) { return bate(r.codigo, r.titulo, r.texto, g.grupo); });
         if (!itens.length) return;
         total += itens.length;
-        lista.appendChild(grupo("r" + n, g.grupo, itens.length, "", function (caixa) {
-          itens.forEach(function (r) { caixa.appendChild(cartaoMensagem(r.titulo, r.codigo, r.texto)); });
-        }));
+        var secao = elemento("section", "cartao secao-objecoes");
+        var cabeca = elemento("h2", "titulo-secao", g.grupo + " ");
+        cabeca.appendChild(elemento("span", "pequeno", "(" + itens.length + ")"));
+        secao.appendChild(cabeca);
+        var grade = elemento("div", "grade-objecoes");
+        var aberta = null;
+        itens.forEach(function (r, i) {
+          var chave = n + ":" + g.grupo + ":" + r.titulo + ":" + i;
+          var b = elemento("button", "botao-objecao");
+          b.type = "button";
+          b.setAttribute("aria-pressed", chave === respostaAberta ? "true" : "false");
+          if (r.codigo) b.appendChild(elemento("span", "codigo", r.codigo));
+          b.appendChild(elemento("span", "titulo-botao", r.titulo));
+          b.addEventListener("click", function () {
+            respostaAberta = respostaAberta === chave ? "" : chave;
+            montarLista(lista);
+            var alvo = document.getElementById("resposta-aberta");
+            if (alvo && alvo.scrollIntoView) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+          grade.appendChild(b);
+          if (chave === respostaAberta) aberta = r;
+        });
+        secao.appendChild(grade);
+        if (aberta) {
+          var bloco = elemento("div", "objecao aberta");
+          bloco.id = "resposta-aberta";
+          var topo = elemento("div", "topo-objecao");
+          topo.appendChild(elemento("h3", "titulo-objecao", (aberta.codigo ? aberta.codigo + " · " : "") + aberta.titulo));
+          var fechar = botao("Fechar", "claro pequeno-botao");
+          fechar.addEventListener("click", function () { respostaAberta = ""; montarLista(lista); });
+          topo.appendChild(fechar);
+          bloco.appendChild(topo);
+          bloco.appendChild(cartaoMensagem("", "", aberta.texto));
+          secao.appendChild(bloco);
+        }
+        lista.appendChild(secao);
       });
     } else {
       textos.objecoes.forEach(function (s, n) {
