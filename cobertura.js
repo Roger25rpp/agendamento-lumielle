@@ -177,4 +177,5 @@ window.COBERTURA = {"atualizada_em": "23/11/2026", "faixas": [[30000000,31999999
 [24900001,24999999,"Maricá","RJ","Faixa de CEP conferida em sites de consulta (ruacep, cepsbrasil, ceps.io) em 20/11/2026"],
 [24800001,24889999,"Itaboraí","RJ","Faixa de CEP conferida em sites de consulta (ruacep, cepsbrasil, ceps.io) em 20/11/2026"],
 [74900000,74999999,"Aparecida de Goiânia","GO",""],
-[36000001,36107999,"Juiz de Fora","MG","Faixa do município conferida em ruacep e cepsbrasil (23/11/2026)."]]};
+[36000001,36107999,"Juiz de Fora","MG","Faixa do município conferida em ruacep e cepsbrasil (23/11/2026)."],
+[44000001,44149999,"Feira de Santana","BA","Faixa do município conferida em ruacep e cepsbrasil (23/11/2026)."]]};
