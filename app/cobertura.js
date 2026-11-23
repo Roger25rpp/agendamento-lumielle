@@ -1,5 +1,5 @@
 /* Gerado por ferramentas/atualizar.py a partir do cobertura_logzz.xlsx do CRM. Não edite à mão. */
-window.COBERTURA = {"atualizada_em": "20/11/2026", "faixas": [[30000000,31999999,"Belo Horizonte","MG",""],
+window.COBERTURA = {"atualizada_em": "23/11/2026", "faixas": [[30000000,31999999,"Belo Horizonte","MG",""],
 [32400000,32449999,"Ibirité","MG",""],
 [33000000,33199999,"Santa Luzia","MG",""],
 [32600000,32699999,"Betim","MG",""],
@@ -176,4 +176,5 @@ window.COBERTURA = {"atualizada_em": "20/11/2026", "faixas": [[30000000,31999999
 [24400001,24799999,"São Gonçalo","RJ","Faixa de CEP conferida em sites de consulta (ruacep, cepsbrasil, ceps.io) em 20/11/2026"],
 [24900001,24999999,"Maricá","RJ","Faixa de CEP conferida em sites de consulta (ruacep, cepsbrasil, ceps.io) em 20/11/2026"],
 [24800001,24889999,"Itaboraí","RJ","Faixa de CEP conferida em sites de consulta (ruacep, cepsbrasil, ceps.io) em 20/11/2026"],
-[74900000,74999999,"Aparecida de Goiânia","GO",""]]};
+[74900000,74999999,"Aparecida de Goiânia","GO",""],
+[36000001,36107999,"Juiz de Fora","MG","Faixa do município conferida em ruacep e cepsbrasil (23/11/2026)."]]};
