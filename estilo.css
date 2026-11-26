@@ -180,3 +180,13 @@ h2.titulo-secao { font-size: 1rem; margin: 0 0 .5rem; }
 .objecao.aberta { margin-top: .6rem; padding: .3rem .6rem .2rem; border: 2px solid var(--cobre); border-radius: 8px; scroll-margin-top: .5rem; }
 .topo-objecao { display: flex; justify-content: space-between; align-items: flex-start; gap: .4rem; }
 .topo-objecao .pequeno-botao { margin-top: .3rem; }
+
+/* Deu algum problema na Logzz? (26/11/2026) */
+.situacoes-botoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; margin-top: .5rem; }
+.situacoes-botoes .botao { display: flex; flex-direction: column; align-items: flex-start; text-align: left; height: auto; white-space: normal; line-height: 1.25; padding: .5rem .6rem; }
+.situacoes-botoes .botao .pequeno { font-weight: normal; }
+.situacao-painel { margin-top: .8rem; padding-top: .6rem; border-top: 1px solid #e6dccf; }
+.situacao-painel[hidden] { display: none; }
+.quando-mandar { background: #fdf1d8; color: #7a4f00; }
+.respostas-caso .botao { white-space: normal; height: auto; text-align: left; }
+.texto-editavel { width: 100%; min-height: 14rem; font: inherit; white-space: pre-wrap; margin-top: .4rem; }

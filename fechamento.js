@@ -241,6 +241,8 @@
     el.paraCrm.disabled = !bloco;
     if (el.paraCrmEstoque) el.paraCrmEstoque.disabled = !bloco;
     desenharEstoque();
+    // "Deu algum problema na Logzz?" (problemas.js, 26/11/2026) usa nome, cidade, kit e dia daqui.
+    window.dispatchEvent(new CustomEvent("fechamento-mudou", { detail: { estado: estado, r: r } }));
   }
 
   // ---------- Estoque indisponível ----------
