@@ -63,6 +63,16 @@ a lista de CEPs e publica. As imagens da Galeria ficam públicas no endereço do
 - O que está nos campos fica só no celular até tocar em Limpar, em Dados da cliente. Limpe antes de começar outra cliente.
 - `testes/testar_fechamento.py` confere o app contra o CRM (roda junto com o `testes/testar.py`).
 
+## Deu algum problema na Logzz? (26/11/2026)
+- Logo abaixo da mensagem de fechamento, igual ao fim do Agendamento do CRM (§5.32): 9 botões (cidade sem Logzz, endereço
+  recusado, dia pedido indisponível, dia pedido não abriu, domingo ou feriado, estoque, já existe uma entrega, garantia
+  logística, reagendar frustrado). Cada um mostra quando aparece, quando mandar, o que fazer, as datas e a resposta já
+  preenchida (nome, cidade, kit e datas da mensagem de fechamento), editável, com Enviar e Copiar.
+- A lista e os textos vêm do CRM no mesmo comando, embaralhados com a senha da aba Mensagens. Sem a senha, o quadro pede
+  para abrir Mensagens. Nada é gravado aqui: o que precisa ficar registrado vai pelo "Copiar para o CRM".
+- `app/situacoes.js` é cópia do preenchimento de `crm/situacoes.py`; `testes/testar_situacoes.py` confere os dois (roda
+  junto com o `testes/testar.py`).
+
 ## Regra importante
 A lógica fica em `app/logica.js` e é uma cópia de `crm/agendamento.py` (com a mensagem de fechamento), `crm/cobertura.py` e da função
 `ddd_na_cobertura` de `crm/regioes.py`. Se o Agendamento do CRM
@@ -89,3 +99,4 @@ mudar, mude também o `logica.js` e rode `testes/testar.py`.
   Copiar. Os textos vêm de Configurações → Agendamento do CRM, no mesmo comando, embaralhados com a senha, e passam pela
   mesma trava de dado pessoal. Só aparecem no celular depois que o Rogerio rodar o comando de exportar.
 - 18/11/2026: o "Colar" reconhece o bloco do "Levar para o celular" do CRM e preenche a mensagem de fechamento.
+- 26/11/2026: "Deu algum problema na Logzz?", com as 9 situações do CRM e a resposta preenchida.

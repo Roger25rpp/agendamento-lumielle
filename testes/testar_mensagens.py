@@ -121,7 +121,8 @@ def testar_banco(erros):
         con.commit()
         textos = mensagens.ler(con)
         con.close()
-    checar(textos["respostas"] == [{"grupo": "Abertura", "itens": [{"codigo": "", "titulo": "Oi", "texto": "Oi, {nome}!"}]}],
+    checar(textos["respostas"] == [{"grupo": "Abertura", "itens": [{"codigo": "", "titulo": "Oi", "texto": "Oi, {nome}!",
+                                                                            "biblioteca": ""}]}],
            "respostas sem as RMK", erros)
     checar(textos["objecoes"][0]["itens"][0]["mensagens"] == [{"rotulo": "Passo 1", "texto": "Entendo, {nome}."}],
            "objeções com as mensagens", erros)

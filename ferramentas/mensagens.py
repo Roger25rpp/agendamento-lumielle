@@ -82,14 +82,18 @@ def ler(con):
         "objecoes": [{"secao", "nota", "itens": [{"codigo", "titulo", "dor", "resultado", "nota",
                                                    "mensagens": [{"rotulo", "texto"}]}]}]}"""
     respostas, grupos = [], {}
+    # A RSP de origem (CRM, migração 45) deixa a central "Deu algum problema na Logzz?" achar a RSP-027 pelo nome (26/11/2026).
+    tem_biblioteca = any(c["name"] == "biblioteca" for c in con.execute("PRAGMA table_info(respostas)"))
+    biblioteca = "r.biblioteca" if tem_biblioteca else "NULL"
     for r in con.execute(
-            "SELECT g.id AS gid, g.nome AS grupo, r.codigo, r.titulo, r.texto FROM respostas r"
+            f"SELECT g.id AS gid, g.nome AS grupo, r.codigo, r.titulo, r.texto, {biblioteca} AS biblioteca FROM respostas r"
             " JOIN grupos_resposta g ON g.id = r.grupo_id WHERE COALESCE(r.codigo, '') NOT LIKE 'RMK-%'"
             " ORDER BY g.ordem, g.id, r.ordem, r.id"):
         if r["gid"] not in grupos:
             grupos[r["gid"]] = {"grupo": r["grupo"], "itens": []}
             respostas.append(grupos[r["gid"]])
-        grupos[r["gid"]]["itens"].append({"codigo": r["codigo"] or "", "titulo": r["titulo"], "texto": r["texto"]})
+        grupos[r["gid"]]["itens"].append({"codigo": r["codigo"] or "", "titulo": r["titulo"], "texto": r["texto"],
+                                          "biblioteca": r["biblioteca"] or ""})
     objecoes = []
     for s in con.execute("SELECT id, nome, nota FROM objecoes_secoes ORDER BY ordem, id").fetchall():
         itens = []

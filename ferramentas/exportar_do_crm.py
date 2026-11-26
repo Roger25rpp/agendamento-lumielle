@@ -54,6 +54,30 @@ def textos_do_agendamento(con):
             "estoque_imagem_acompanhamento": caminho(estoque.get("imagem_acompanhamento_id", estoque["imagem_id"]))}
 
 
+def situacoes_do_crm():
+    """"Deu algum problema na Logzz?" (CRM, §5.32; no app em 26/11/2026): a lista de situações vem do CRM, sem cópia aqui.
+    No app não existe o quadro da DIA-03 nem o gravar: a DIA-03 entra como resposta comum de "Dia pedido não abriu" e
+    os passos dizem para gravar no CRM. CRM sem a central (antes de 26/11/2026): lista vazia."""
+    sys.path.insert(0, CRM)
+    try:
+        from crm import situacoes
+    except ImportError:
+        return []
+    lista = []
+    for s in situacoes.SITUACOES:
+        s = dict(s, passos=list(s["passos"]), codigos=list(s["codigos"]))
+        if s["id"] == "dia-nao-abriu":
+            s["codigos"] = ["DIA-03"] + [c for c in s["codigos"] if c != "DIA-03"]
+            s["passos"] = [p.replace("Escolher abaixo o dia em que agendou e mandar a DIA-03.",
+                                     "Escolher abaixo os dois dias e mandar a DIA-03.")
+                            .replace("\"Gravar na ficha do lead\" cria a tarefa",
+                                     "No CRM, \"Gravar na ficha do lead\" (com o dia agendado) cria a tarefa")
+                           for p in s["passos"]]
+        lista.append({k: s.get(k) for k in ("id", "titulo", "sub", "aparece", "mandar", "passos", "datas", "codigos",
+                                             "aviso_bairro", "gravar")})
+    return lista
+
+
 def ler_crm(banco):
     con = sqlite3.connect(f"file:{banco}?mode=ro", uri=True)  # só leitura
     con.row_factory = sqlite3.Row
@@ -71,6 +95,7 @@ def ler_crm(banco):
                 "SELECT titulo, arquivo FROM imagens ORDER BY ordem, id")]
         textos = mensagens.ler(con)
         textos["agendamento"] = textos_do_agendamento(con)
+        textos["situacoes"] = situacoes_do_crm()
     finally:
         con.close()
     return links, imagens, textos

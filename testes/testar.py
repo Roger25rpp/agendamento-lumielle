@@ -74,6 +74,8 @@ def main():
     erros += testar_links.main()
     import testar_mensagens  # aba Mensagens (24/10/2026)
     erros += testar_mensagens.main()
+    import testar_situacoes  # "Deu algum problema na Logzz?" (26/11/2026)
+    erros += testar_situacoes.main()
     sys.exit(1 if erros else 0)
 
 
