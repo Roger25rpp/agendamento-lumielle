@@ -18,7 +18,7 @@ import exportar_do_crm  # noqa: E402
 PEDACOS = ["Oi, {nome}! ", "Meu bem, a [dia da semana], dia [XX], não estava disponível. ", "para [cidade] ",
            'a entrega não sai [no dia que ela pediu, ex.: "amanhã"]. ', "O dia [dia que ela pediu, ex.: 05/12] não abriu. ",
            "*[dia da semana], dia [XX/XX]* ", "[dia da semana, dia XX/XX] ", "[dia da semana, dia XX] ", "Se [esse dia] não der, ",
-           "Se [dia da semana] não ficar bom, ", "também tenho [dia] ou [dd/mm]. ", "os seus [N] frascos ([kit]) ",
+           "Se [dia da semana] não ficar bom, ", "também tenho [dia] ou [dd/mm]. ", "os seus [N] frascos ([kit]) ", "por [valor]. ",
            "agendei para [o dia agendado]. ", "turno [horário]. ", "[XX/XX] ", "[XX] ", "[Dia Da Semana], dia [xx/xx] ",
            "pra você não perder a oferta especial de Black Friday, ",
            "pra garantir pra você a condição de Black Friday que você recebeu. ",
@@ -36,7 +36,7 @@ def casos(sorte):
         chaves = sorte.sample(CHAVES, sorte.randint(0, 4))
         datas = [(c, (hoje + timedelta(days=sorte.randint(-2, 20))).isoformat()) for c in chaves]
         campos = {"nome": sorte.choice(NOMES), "cidade": sorte.choice(["", "Campinas", "Lagoa Clara"]),
-                  "kit": sorte.choice(["", "3 + 1 extra", "kit com 3 frascos"]), "qtde": sorte.choice(["", 4, 7]),
+                  "kit": sorte.choice(["", "3 + 1 extra", "kit com 3 frascos"]), "qtde": sorte.choice(["", 4, 7]), "valor": sorte.choice(["", "R$ 297,90"]),
                   "aviso": sorte.choice(["", "endereco", "bairro"])}
         yield {"texto": texto, "campos": campos, "datas": datas, "hoje": hoje.isoformat()}
 
@@ -83,7 +83,8 @@ def main():
             campos[c] = sorte.choice(["", "2026-02-30", (hoje + timedelta(days=sorte.randint(-2, 15))).isoformat()])
         montar.append({"situacao": s, "codigo": sorte.choice(s["codigos"] + ["DIA-99"]), "campos": campos,
                        "hoje": hoje.isoformat()})
-    links = [{"qtde": q, "grupo": g} for q in (None, 1, 3, 4, 7, 12) for g in (None, "normal", "extra", "plus", "desconto")]
+    links = [{"qtde": q, "grupo": g, "preco": p} for q in (None, 1, 3, 4, 7, 12)
+             for g in (None, "normal", "extra", "plus", "desconto") for p in (None, 297.9, 1297.0)]
     entrada = {"preencher": preencher, "montar": montar, "respostas": respostas, "links": links}
     js = subprocess.run(["node", os.path.join(PASTA, "rodar_situacoes.js")], input=json.dumps(entrada),
                         capture_output=True, text=True, encoding="utf-8", check=True)
@@ -120,9 +121,9 @@ def main():
         if link["qtde"]:
             kit = (f"{link['qtde'] - 1} + 1 extra" if (link["grupo"] or "") in ("extra", "plus") and link["qtde"] > 1
                    else agendamento.nome_do_kit(link["qtde"], link["grupo"]))
-            certo = {"kit": kit, "qtde": link["qtde"]}
+            certo = {"kit": kit, "qtde": link["qtde"], "valor": agendamento.em_reais(link["preco"]) if link["preco"] else ""}
         else:
-            certo = {"kit": "", "qtde": ""}
+            certo = {"kit": "", "qtde": "", "valor": ""}
         comparar("kit", certo, app, link)
     if [s["id"] for s in situacoes.SITUACOES] != list(lista):
         erros += 1

@@ -69,6 +69,7 @@
       if (baixo === "cidade" && campos.cidade) return campos.cidade;
       if (baixo === "kit" && campos.kit) return campos.kit;
       if (baixo === "n" && campos.qtde) return String(campos.qtde);
+      if (baixo === "valor" && campos.valor) return campos.valor;
       if (baixo.indexOf("dia da semana, dia") === 0 || ["dia", "dd/mm", "xx/xx", "xx", "dia da semana"].indexOf(baixo) >= 0) {
         var d = proxima();
         if (d === null && baixo === "dia da semana" && agendada) return semana(agendada);
@@ -124,13 +125,19 @@
     return r;
   }
 
+  // Como o CRM escreve o valor na lacuna [valor] (28/11/2026): 297.9 -> "R$ 297,90"; 1297 -> "R$ 1.297,00".
+  function emReais(valor) {
+    var partes = Number(valor).toFixed(2).split(".");
+    return "R$ " + partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "," + partes[1];
+  }
+
   // Como o CRM escreve o kit na lacuna [kit]: "3 + 1 extra" no grupo extra ou plus; senão o nome do kit.
   function kitDoLink(link) {
-    if (!link || !link.qtde) return { kit: "", qtde: "" };
+    if (!link || !link.qtde) return { kit: "", qtde: "", valor: "" };
     var extra = (link.grupo === "extra" || link.grupo === "plus") && link.qtde > 1;
     var nome = link.qtde === 1 ? "1 frasco" : "kit com " + link.qtde + " frascos" +
       ((link.grupo === "extra" || link.grupo === "plus") ? " (" + (link.qtde - 1) + " + 1 extra)" : "");
-    return { kit: extra ? (link.qtde - 1) + " + 1 extra" : nome, qtde: link.qtde };
+    return { kit: extra ? (link.qtde - 1) + " + 1 extra" : nome, qtde: link.qtde, valor: link.preco ? emReais(link.preco) : "" };
   }
 
   var api = { preencher: preencher, montar: montar, resposta: resposta, kitDoLink: kitDoLink, DATAS: DATAS,
