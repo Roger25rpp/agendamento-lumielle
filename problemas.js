@@ -66,7 +66,7 @@
     var e = fechamento.estado || {};
     var link = LINKS.filter(function (l) { return String(l.id) === String(e.kit || ""); })[0];
     var k = S.kitDoLink(link);
-    var c = { nome: e.nome || "", cidade: e.cidade || "", kit: k.kit, qtde: k.qtde, aviso: guardado.avisos[s.id] || "" };
+    var c = { nome: e.nome || "", cidade: e.cidade || "", kit: k.kit, qtde: k.qtde, valor: k.valor, aviso: guardado.avisos[s.id] || "" };
     var datas = guardado.datas[s.id] || {};
     s.datas.forEach(function (chave) { c[chave] = datas[chave] || ""; });
     return c;
